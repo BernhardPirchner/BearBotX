@@ -18,10 +18,10 @@ Saubärn Stommtisch
 - [ ] Er soll durch die LEDs einen Status der Verbindung anzeigen: 
 
 > [!IMPORTANT]
-> Blau --> Verbindung wird aufgebaut.
-> Grün --> WLAN Verbindung erfolgreich.
-> Grün- -> 5 Sekunden am Display die IP-Adresse (Verbindung erfolgreich).
-> Rot --> WLAN Verbindung fehlerhaft.
+> - Blau --> Verbindung wird aufgebaut.
+> - Grün --> WLAN Verbindung erfolgreich.
+> - Grün- -> 5 Sekunden am Display die IP-Adresse (Verbindung erfolgreich).
+> - Rot --> WLAN Verbindung fehlerhaft.
 
 
 
