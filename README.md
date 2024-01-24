@@ -17,7 +17,7 @@ Saubärn Stommtisch
 - [ ] Zusätzlich soll der Roboter einem eindeutigen Namen und IP-Adresse anzeigen. 
 - [ ] Er soll durch die LEDs einen Status der Verbindung anzeigen: 
 
-> [!IMPORTANT]
+> [! IMPORTANT]
 > Blau --> Verbindung wird aufgebaut
 > Grün --> WLAN Verbindung erfolgreich
 > Grün- -> 5 Sekunden am Display die IP-Adresse (Verbindung erfolgreich)
