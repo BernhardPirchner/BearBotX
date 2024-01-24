@@ -3,7 +3,7 @@ Hier wird der aktuelle Stand des Projektes wiedergegeben.
 ## BärBot
 
 ### _Anforderung des Roboters_
-- [ ] Der Roboter soll aus der Ferne gesteuert werden können (Computer sowie auf einen Mobilen Endgerät). 
+- [X] Der Roboter soll aus der Ferne gesteuert werden können (Computer sowie auf einen Mobilen Endgerät). 
 - [ ] Der Roboter soll zudem ein suicide-prevention-feature besitzen, das dafür zuständig ist, dass der Roboter nicht gegen eine Wand fährt (kann ein und ausgeschaltet werden). 
 - [ ] Der Roboter soll zusätzlich einen Modus besitzen, der durch den Lichtsensor ermöglicht, eine Linie zu folgen. 
 
