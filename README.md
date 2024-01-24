@@ -1,5 +1,5 @@
 # Saubaern
-Saubärn Stommtisch
+Hier wird der aktuelle Stand des Projektes wiedergegeben. 
 ## BärBot
 
 ### _Anforderung des Roboters_
