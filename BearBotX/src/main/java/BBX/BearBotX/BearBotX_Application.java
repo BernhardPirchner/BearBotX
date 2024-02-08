@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class BearBotXApplication {
+public class BearBotX_Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(BearBotXApplication.class, args);
+		SpringApplication.run(BearBotX_Application.class, args);
 	}
 
 }
