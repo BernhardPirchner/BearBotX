@@ -3,7 +3,7 @@ import socket
 s = socket.socket()
 
 # verbindung definieren
-port = 1234
+port = 6969
 
 ip = input("Enter IP Address: ")
 # verbindung zum server
@@ -12,6 +12,7 @@ s.connect((ip, port))
 s.send(b'Hello')
 
 #packet empfangen vom server
-print(s.recv(4096))
+for i in range(0,100):
+    print(s.recv(4096))
 
 s.close()
