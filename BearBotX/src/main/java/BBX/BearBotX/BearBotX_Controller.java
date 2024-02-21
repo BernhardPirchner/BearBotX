@@ -1,28 +1,32 @@
 package BBX.BearBotX;
 
+import com.fasterxml.jackson.databind.JsonDeserializer;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 class BearBotX_Controller {
 
-    Client client=null;
-    private int i=8;
+    Client client=new Client();
+
+    private String text="Seavas";
 
     @GetMapping("/test")
-    int getInt(){
-        return i;
+    String getString(){
+        return text;
     }
 
 
     @PostMapping("/connect")
     public String connectToServer(@RequestBody String ip){
+        String test;
         try{
-            client=new Client(ip);
+            System.out.println(ip);
+            test=client.connect(ip);
         }catch(Exception ex){
-            return ex.getMessage();
+            return "Exception:\n"+ ex.getMessage();
         }
-        return "Connection Successful";
+        return test;
     }
 
     @PostMapping("/send")

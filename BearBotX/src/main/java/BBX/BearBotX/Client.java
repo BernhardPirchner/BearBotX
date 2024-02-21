@@ -9,13 +9,19 @@ public class Client {
     Scanner in=null;
     PrintWriter out=null;
 
-    public Client(String ip) {
+    public Client(){
+
+    }
+
+    public String connect(String ip) {
         try{
             server=new Socket(ip, 6969);
             in=new Scanner(server.getInputStream());
             out=new PrintWriter(server.getOutputStream());
+            return "Connection successful";
         }catch(Exception ex){
-            System.out.println("Hallo"+ ex.getMessage());
+            System.out.println("Exception:\n"+ ex.getMessage());
+            return "Connection unsuccessful";
         }
     }
 
