@@ -12,7 +12,9 @@ s.connect((ip, port))
 s.send(b'Hello')
 
 #packet empfangen vom server
-for i in range(0,100):
+for i in range(0,10):
     print(s.recv(4096))
+
+s.send(b"STOP")
 
 s.close()
