@@ -22,10 +22,8 @@ def main():
             cyberpi.led.on(255, 0, 0)
             time.sleep(1)
         else:
-
             cyberpi.led.on(0, 255, 0)
             cyberpi.audio.play("ring")
-
             break
 
     ip = cyberpi.network.get_ip()
@@ -58,35 +56,27 @@ def main():
     server_socket.listen(5)
     while True:
         cyberpi.console.clear()
-        res = server_socket.accept()
-        client_s = res[1]
-        client_addr = client_s[0]
-        print("REQUEST:", res, "\nc_socket:", client_s, "\nc_addr:", client_addr)
-        cyberpi.console.println("Client Address:", client_addr)
-        cyberpi.console.println("Client Socket:", client_s)
+        client_sock, client_raddr = server_socket.accept()
+        print("c_socket:", client_sock, "\nc_raddr:", client_raddr)
+        print("Client Address:", client_raddr)
+        print("Client Socket:", client_sock)
 
-        cs = socket.socket()
-        cs.bind(client_s)
-        cs.settimeout(10)
+        cyberpi.led.on(255, 255, 255, id=1)
+        data = client_sock.recv(1024)
+        cyberpi.led.on(255, 255, 255, id=2)
+        print(data.decode('utf-8'))
+        cyberpi.led.on(255, 255, 255, id=3)
+        cyberpi.console.println("Data from Client:", data.decode('utf-8'))
 
-        while True:
-            cyberpi.led.on(255, 255, 255, id=1)
-            data = cs.recv(1024)
-            cyberpi.led.on(255, 255, 255, id=2)
-            print(data.decode('utf-8'))
-            cyberpi.led.on(255, 255, 255, id=3)
-            cyberpi.console.println("Data from Client:", data.decode('utf-8'))
+        if data == b'STOP':
+            break
 
-            if data == b'STOP':
-                break
+        for i in range(0, 10):
+            distance = cyberpi.ultrasonic2.get(index=1)
+            client_sock.send(CONTENT % distance)
+            time.sleep(0.05)
 
-        # for i in range(0,100):
-        #     distance = cyberpi.ultrasonic2.get(index=1)
-        #     client_s.send(CONTENT % distance)
-        #     time.sleep(0.05)
-
-        cs.close()
-        print()
+        client_sock.close()
 
 
 main()
