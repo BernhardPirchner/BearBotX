@@ -1,5 +1,8 @@
 package BBX.BearBotX;
 
+import org.apache.catalina.Server;
+
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.*;
 import java.util.Scanner;
@@ -11,6 +14,12 @@ public class Client {
 
     public Client(){
 
+    }
+
+    public String listen() throws IOException {
+        server  =new Socket("10.10.3.255", 6969);
+        in=new Scanner(server.getInputStream());
+        return in.nextLine();
     }
 
     public String connect(String ip) {
@@ -25,24 +34,14 @@ public class Client {
         }
     }
 
-    /*
-    public void Listen(){
-        System.out.println(in.nextLine());
-    }
-    */
-
-    public String send(String s){
-        String answer="No Answer";
-        if(server != null){
-            try{
+    public void send(String s){
+        if(server != null) {
+            try {
                 out.println(s);
-                answer= in.nextLine();
-                server.close();
-            }catch(Exception ex){
+            } catch (Exception ex) {
                 System.out.println(ex.getMessage());
             }
         }
-        return answer;
     }
 
     public String getData(){
@@ -50,18 +49,16 @@ public class Client {
         return in.nextLine();
     }
 
-    public void setSpeed(int velocity){
-        out.println("ändere Geschwindigkeit zu: "+velocity);
-    }
-
-    private void closeConnection(){
+    public String closeConnection(){
+        String answer="Disconnection was unsuccessful";
         if(server!=null){
             try{
                 server.close();
+                answer="Disconnection was successful";
             }catch(Exception ex){
-                System.out.println(ex.getMessage());
+                answer= "Disconnection was unsuccessful\nException: "+ex.getMessage();
             }
         }
+        return answer;
     }
-
 }
