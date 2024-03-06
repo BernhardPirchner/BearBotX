@@ -1,18 +1,16 @@
 package BBX.BearBotX;
 
-import org.apache.catalina.Server;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.*;
 import java.util.Scanner;
 
-public class Client {
+public class MBot {
     Socket server=null;
     Scanner in=null;
     PrintWriter out=null;
 
-    public Client(){
+    public MBot(){
 
     }
 

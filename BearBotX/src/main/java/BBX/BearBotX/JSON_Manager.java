@@ -22,6 +22,4 @@ public class JSON_Manager {
         }
         return temp.toArray(new String[0]);
     }
-
-
 }
