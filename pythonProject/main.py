@@ -9,12 +9,6 @@ ip = input("Enter IP Address: ")
 # verbindung zum server
 s.connect((ip, port))
 
-s.send(b'Hello')
-
-#packet empfangen vom server
-for i in range(0,10):
-    print(s.recv(4096))
-
-s.send(b"STOP")
+s.send(b'MISC:LEDS:FF,00,FF,01')
 
 s.close()

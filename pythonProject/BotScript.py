@@ -12,7 +12,7 @@ Data: %d
 
 def main():
     cyberpi.audio.add_vol(1)
-    cyberpi.led.on(0, 0, 255)
+    cyberpi.led.on(0, 0, 0xFF)
 
     cyberpi.network.config_sta("htljoh-public", "joh12345")
 
@@ -22,7 +22,7 @@ def main():
             cyberpi.led.on(255, 0, 0)
             time.sleep(1)
         else:
-            cyberpi.led.on(0, 255, 0)
+            cyberpi.led.on(0, 0xFF, 0)
             cyberpi.audio.play("ring")
             break
 
@@ -61,22 +61,31 @@ def main():
         print("Client Address:", client_raddr)
         print("Client Socket:", client_sock)
 
-        cyberpi.led.on(255, 255, 255, id=1)
+        cyberpi.led.on(0xFF, 0xFF, 0xFF)
         data = client_sock.recv(1024)
-        cyberpi.led.on(255, 255, 255, id=2)
-        print(data.decode('utf-8'))
-        cyberpi.led.on(255, 255, 255, id=3)
-        cyberpi.console.println("Data from Client:", data.decode('utf-8'))
+        # print(data.decode('utf-8'))
+        dataframe = data.decode('utf-8')
+        command, extra, data = dataframe.split(':')
+        sepData = data.split(',')
+        print("Data", sepData)
+        cyberpi.led.off()
+        red = '0x' + sepData[0]
+        green = '0x' + sepData[1]
+        blue = '0x' + sepData[2]
+        print(red, green, blue, sep=':')
+        cyberpi.led_on(red.decode('utf-8'), green.decode('utf-8'), blue.decode('utf-8'))
+        # cyberpi.console.println("Data from Client:",data.decode('utf-8'))
 
         if data == b'STOP':
             break
 
-        for i in range(0, 10):
-            distance = cyberpi.ultrasonic2.get(index=1)
-            client_sock.send(CONTENT % distance)
-            time.sleep(0.05)
-
+        # for i in range(0,10):
+        #     distance = cyberpi.ultrasonic2.get(index=1)
+        #     client_sock.send(CONTENT % distance)
+        #     time.sleep(0.05)
+        cyberpi.led.on(0x00, 0xFF, 0xFF)
         client_sock.close()
+        break
 
 
 main()
