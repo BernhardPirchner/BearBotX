@@ -63,27 +63,62 @@ def main():
 
         cyberpi.led.on(0xFF, 0xFF, 0xFF)
         data = client_sock.recv(1024)
-        # print(data.decode('utf-8'))
         dataframe = data.decode('utf-8')
         command, extra, data = dataframe.split(':')
         sepData = data.split(',')
         print("Data", sepData)
         cyberpi.led.off()
-        red = '0x' + sepData[0]
-        green = '0x' + sepData[1]
-        blue = '0x' + sepData[2]
-        print(red, green, blue, sep=':')
-        cyberpi.led_on(red.decode('utf-8'), green.decode('utf-8'), blue.decode('utf-8'))
-        # cyberpi.console.println("Data from Client:",data.decode('utf-8'))
 
-        if data == b'STOP':
-            break
+        if command == "MOVE":
+            # Code for handling Movement
+            speed = int(sepData[0])
+            angle = int(sepData[1])
+            style = sepData[2]
+
+            print("Recieved Movement Command")
+            if extra == "STOP":  # Stop the Robot
+                print("STOP Commanded")
+                cyberpi.mbot2.EM_stop(port="all")
+                cyberpi.led.on(0xFF, 0x00, 0x00, id=1)
+                cyberpi.led.on(0xFF, 0x00, 0x00, id=5)
+            elif extra == "FWST":  # Move Forward in a straight line
+                print("Forward Commanded")
+                print(sepData[0])
+                cyberpi.mbot2.forward(speed)
+            elif extra == "BWST":  # Move Backward in a straight line
+                print("Backward Commanded")
+                print(sepData[0])
+                cyberpi.mbot2.backward(speed)
+            elif extra == "TRLT":  # Turn left on the spot
+                print("Turn Left Commanded")
+                cyberpi.mbot2.turn(-angle, speed)
+            elif extra == "FWLT":  # Move Forward and turn left,
+                # radius determined by angle imput [0-90]->[0.0-1.0]
+                # RPM Ratio = factor/1
+                print("Turn Forward Left Commanded")
+                factor = angle / 90
+                ltdrv = speed * factor
+                cyberpi.mbot2.drive_power(ltdrv, -speed)
+
+        elif command == "MISC":
+            # Code for miscalanious Commands
+            print()
+
+        # red = '0x'+sepData[0]
+        # green = '0x'+sepData[1]
+        # blue = '0x'+sepData[2]
+        # print(red,green,blue,sep=':')
+        # cyberpi.led_on(red.decode('utf-8'),green.decode('utf-8'),blue.decode('utf-8'))
+        # cyberpi.console.println("Data from Client:",data.decode('utf-8'))
 
         # for i in range(0,10):
         #     distance = cyberpi.ultrasonic2.get(index=1)
         #     client_sock.send(CONTENT % distance)
         #     time.sleep(0.05)
-        cyberpi.led.on(0x00, 0xFF, 0xFF)
+
+        time.sleep(1)
+        cyberpi.led.on(0xFF, 0xFF, 0xFF)
+        cyberpi.mbot2.EM_stop(port="all")
         client_sock.close()
         break
 
