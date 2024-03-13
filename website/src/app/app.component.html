@@ -29,25 +29,20 @@
     </li>
   </ul>
 </div>
-<h1>Color Picker Demo</h1>
 
+<h1>Color Picker Demo</h1>
 <div>
-  <input type="color" id="head" name="head" value="#e66465" />
-  <label for="head"></label>
+  <input type="color" id="head1" name="head1" [value]="colors[0]" (input)="onColorChanged($event, 1)">
 </div>
 <div>
-  <input type="color" id="head" name="head" value="#e66465" />
-  <label for="head"></label>
+  <input type="color" id="head2" name="head2" [value]="colors[1]" (input)="onColorChanged($event, 2)">
 </div>
 <div>
-  <input type="color" id="head" name="head" value="#e66465" />
-  <label for="head"></label>
+  <input type="color" id="head3" name="head3" [value]="colors[2]" (input)="onColorChanged($event, 3)">
 </div>
 <div>
-  <input type="color" id="head" name="head" value="#e66465" />
-  <label for="head"></label>
+  <input type="color" id="head4" name="head4" [value]="colors[3]" (input)="onColorChanged($event, 4)">
 </div>
 <div>
-  <input type="color" id="head" name="head" value="#e66465" />
-  <label for="head"></label>
+  <input type="color" id="head5" name="head5" [value]="colors[4]" (input)="onColorChanged($event, 5)">
 </div>
