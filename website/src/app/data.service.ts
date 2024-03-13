@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../environments/environment';
 import { map } from 'rxjs/operators';
+import { MbotSelection } from './mbot-selection.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,10 +24,10 @@ export class DataService {
     return this.http.post('http://10.10.2.120:6968/velocity', { speed });
   }
 
-  fetchMbotSelection(): Observable<any[]> {
+  /*fetchMbotSelection(): Observable<any[]> {
     return this.http.get<any[]>('http://10.10.2.120:6968/mbot_selection');
-  }
-  /*fetchMbotSelection(): Observable<MbotSelection[]> {
+  }*/
+  fetchMbotSelection(): Observable<MbotSelection[]> {
     return this.http.get<string[]>('http://10.10.2.120:6968/mbot_selection').pipe(
       map((data: string[]) => {
         return data.map(item => {
@@ -35,5 +36,5 @@ export class DataService {
         });
       })
     );
-  }*/
+  }
 }
