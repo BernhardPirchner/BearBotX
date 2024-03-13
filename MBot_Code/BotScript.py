@@ -61,6 +61,9 @@ def main():
         print("Client Address:", client_raddr)
         print("Client Socket:", client_sock)
 
+        # while True:
+        #     #Continuously get Commands from Client
+
         cyberpi.led.on(0xFF, 0xFF, 0xFF)
         data = client_sock.recv(1024)
         dataframe = data.decode('utf-8')
@@ -93,7 +96,7 @@ def main():
                 print("Turn Left Commanded")
                 cyberpi.mbot2.turn(-angle, speed)
             elif extra == "FWLT":  # Move Forward and turn left,
-                # radius determined by angle imput [0-90]->[0.0-1.0]
+                # ratio determined by angle imput [0-90]->[0.0-1.0]
                 # RPM Ratio = factor/1
                 print("Turn Forward Left Commanded")
                 factor = angle / 90
@@ -103,6 +106,9 @@ def main():
         elif command == "MISC":
             # Code for miscalanious Commands
             print()
+        elif command == "DISC":
+
+            break
 
         # red = '0x'+sepData[0]
         # green = '0x'+sepData[1]
