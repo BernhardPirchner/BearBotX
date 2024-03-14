@@ -55,76 +55,72 @@ def main():
 
     server_socket.listen(5)
     while True:
-        cyberpi.console.clear()
+
         client_sock, client_raddr = server_socket.accept()
         print("c_socket:", client_sock, "\nc_raddr:", client_raddr)
         print("Client Address:", client_raddr)
         print("Client Socket:", client_sock)
+        cyberpi.console.println("Connected to:", client_raddr)
 
-        # while True:
-        #     #Continuously get Commands from Client
+        while True:
+            # Continuously get Commands from Client
+            # cyberpi.led.on(0xFF,0xFF,0xFF)
+            data = client_sock.recv(1024)
+            dataframe = data.decode('utf-8')
+            print("###INCOMING COMMAND###")
+            print("Dataframe", dataframe)
+            command, extra, data = dataframe.split(':')
+            print(command, ":", extra, ":", data)
+            sepData = data.split(',')
+            print("Data", sepData)
+            cyberpi.led.off()
 
-        cyberpi.led.on(0xFF, 0xFF, 0xFF)
-        data = client_sock.recv(1024)
-        dataframe = data.decode('utf-8')
-        command, extra, data = dataframe.split(':')
-        sepData = data.split(',')
-        print("Data", sepData)
-        cyberpi.led.off()
+            if command == "MOVE":
+                # Code for handling Movement
+                speed = int(sepData[0])
+                angle = int(sepData[1])
+                style = sepData[2]
 
-        if command == "MOVE":
-            # Code for handling Movement
-            speed = int(sepData[0])
-            angle = int(sepData[1])
-            style = sepData[2]
+                print("Recieved Movement Command")
+                if extra == "STOP":  # Stop the Robot
+                    print("STOP Commanded")
+                    cyberpi.mbot2.EM_stop(port="all")
+                    print("Test")
+                    cyberpi.led.on(0xFF, 0x00, 0x00, id=1)
+                    cyberpi.led.on(0xFF, 0x00, 0x00, id=5)
+                elif extra == "FWST":  # Move Forward in a straight line
+                    print("Forward Commanded")
+                    print(sepData[0])
+                    cyberpi.mbot2.forward(speed)
+                elif extra == "BWST":  # Move Backward in a straight line
+                    print("Backward Commanded")
+                    print(sepData[0])
+                    cyberpi.mbot2.backward(speed)
+                elif extra == "TRLT":  # Turn left on the spot
+                    print("Turn Left Commanded")
+                    cyberpi.mbot2.turn(-angle, speed)
+                elif extra == "FWLT":  # Move Forward and turn left,
+                    # ratio determined by angle imput [0-90]->[0.0-1.0]
+                    # RPM Ratio = factor/1
+                    print("Turn Forward Left Commanded")
+                    factor = angle / 90
+                    ltdrv = speed * factor
+                    cyberpi.mbot2.drive_power(ltdrv, -speed)
 
-            print("Recieved Movement Command")
-            if extra == "STOP":  # Stop the Robot
-                print("STOP Commanded")
+            elif command == "MISC":
+                # Code for miscalanious Commands
+                if extra == "LEDS":
+                    red = int('0x' + sepData[0], 16)
+                    green = int('0x' + sepData[1], 16)
+                    blue = int('0x' + sepData[2], 16)
+
+            elif command == "DISC":
                 cyberpi.mbot2.EM_stop(port="all")
-                cyberpi.led.on(0xFF, 0x00, 0x00, id=1)
-                cyberpi.led.on(0xFF, 0x00, 0x00, id=5)
-            elif extra == "FWST":  # Move Forward in a straight line
-                print("Forward Commanded")
-                print(sepData[0])
-                cyberpi.mbot2.forward(speed)
-            elif extra == "BWST":  # Move Backward in a straight line
-                print("Backward Commanded")
-                print(sepData[0])
-                cyberpi.mbot2.backward(speed)
-            elif extra == "TRLT":  # Turn left on the spot
-                print("Turn Left Commanded")
-                cyberpi.mbot2.turn(-angle, speed)
-            elif extra == "FWLT":  # Move Forward and turn left,
-                # ratio determined by angle imput [0-90]->[0.0-1.0]
-                # RPM Ratio = factor/1
-                print("Turn Forward Left Commanded")
-                factor = angle / 90
-                ltdrv = speed * factor
-                cyberpi.mbot2.drive_power(ltdrv, -speed)
+                break
 
-        elif command == "MISC":
-            # Code for miscalanious Commands
-            print()
-        elif command == "DISC":
-
-            break
-
-        # red = '0x'+sepData[0]
-        # green = '0x'+sepData[1]
-        # blue = '0x'+sepData[2]
-        # print(red,green,blue,sep=':')
-        # cyberpi.led_on(red.decode('utf-8'),green.decode('utf-8'),blue.decode('utf-8'))
-        # cyberpi.console.println("Data from Client:",data.decode('utf-8'))
-
-        # for i in range(0,10):
-        #     distance = cyberpi.ultrasonic2.get(index=1)
-        #     client_sock.send(CONTENT % distance)
-        #     time.sleep(0.05)
-
-        time.sleep(1)
-        cyberpi.led.on(0xFF, 0xFF, 0xFF)
+        cyberpi.led.off()
         cyberpi.mbot2.EM_stop(port="all")
+        cyberpi.console.clear()
         client_sock.close()
         break
 
