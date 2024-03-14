@@ -3,6 +3,7 @@ package BBX.BearBotX;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 public class MBot {
@@ -24,7 +25,7 @@ public class MBot {
         try{
             server=new Socket(ip, 6969);
             in=new Scanner(server.getInputStream());
-            out=new PrintWriter(server.getOutputStream());
+            out=new PrintWriter(server.getOutputStream(), true);
             return "Connection successful";
         }catch(Exception ex){
             System.out.println("Exception:\n"+ ex.getMessage());
@@ -35,6 +36,9 @@ public class MBot {
     public void send(String s){
         if(server != null) {
             try {
+                //byte[] command=s.getBytes("UTF8");
+                //System.out.println(command);
+                System.out.println("Hallo");
                 out.println(s);
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());

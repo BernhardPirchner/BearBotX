@@ -7,27 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class MBotListener {
-    //Auf Server umstellen
+public class MBotListener implements Runnable {
     ServerSocket server=null;
     ArrayList<String> list=new ArrayList<>();
 
     public MBotListener(){
         try {
             server = new ServerSocket(6970);
-            Scanner in = new Scanner(server.getInputStream());
-            Thread thread = new Thread() {
-                public void run() {
-                    String s = "";
-                    while (true) {
-                        s = in.nextLine();
-                        if (!list.contains(s)) {
-                            list.add(s);
-                        }
-                    }
-                }
-            };
-            thread.run();
+            run();
         }catch(Exception ex){
             System.out.println(ex.getMessage());
         }
@@ -35,5 +22,30 @@ public class MBotListener {
 
     public ArrayList<String> getDevices(){
         return list;
+    }
+
+    @Override
+    public void run() {
+        while(true){
+            Socket client=null;
+
+            try{
+                client=server.accept();
+                Scanner in =new Scanner(client.getInputStream());
+                String s=in.nextLine();
+                boolean x=true;
+                for (String bot:
+                        list) {
+                    if(bot.equals(s)) {
+                        x = false;
+                    }
+                }
+                if(x){
+                    list.add(s);
+                }
+            }catch(Exception ex){
+                System.out.println();
+            }
+        }
     }
 }

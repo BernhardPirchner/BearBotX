@@ -1,5 +1,9 @@
 package BBX.BearBotX;
 
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -7,11 +11,22 @@ import java.util.ArrayList;
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 class BearBotX_Controller {
-    MBotListener mBotListener=new MBotListener();
+    MBotListener mbotListener=null;
+    @Bean
+    public CommandLineRunner runner(TaskExecutor taskExecutor){
+        return new CommandLineRunner() {
+            @Override
+            public void run(String... args) throws Exception {
+                taskExecutor.execute(mbotListener=new MBotListener());
+            }
+        };
+    }
     MBot mBot =new MBot();
     JSON_Manager json_manager=new JSON_Manager();
 
-    private String text="Fabi der G";
+    private String text="Fabi L";
+
+    private int speed=0;
 
     @GetMapping("/test")
     String getString(){
@@ -38,8 +53,9 @@ class BearBotX_Controller {
 
     @PostMapping("/velocity")
     public void setVelocity(@RequestBody String speed){
-        //client.send("{\"speed\":"+speed);
-        System.out.println(speed);
+        String[] temp=json_manager.toStringArray(speed);
+        this.speed=Integer.parseInt(temp[temp.length-1]);
+        //System.out.println(this.speed);
     }
 
     @GetMapping("/disconnect")
@@ -54,11 +70,13 @@ class BearBotX_Controller {
         return answer;
     }
 
-    @PostMapping("/direction")
+    @PostMapping("/move")
     public void listen(@RequestBody String dir){
-        System.out.println(dir);
         String[] dirArray=json_manager.toStringArray(dir);
-        System.out.println(dirArray[0]+" "+dirArray[1]);
+        System.out.println(dir);
+        String command="MOVE:FWST:"+speed+",000,RS";
+        System.out.println(command);
+        //mBot.send(command);
     }
 
     @GetMapping("/mbot_selection")
@@ -69,5 +87,10 @@ class BearBotX_Controller {
         list.add("Device 3, 0.0.0.3");
 
         return list;
+    }
+
+    @PostMapping("/color")
+    public void ledColor(@RequestBody String colors){
+        System.out.println(colors);
     }
 }
