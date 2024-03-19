@@ -5,13 +5,11 @@ import socket
 import network
 import math
 
-CONTENT = b"""\
-Data: %d
-"""
+SENSORDATA = b'SENS:%d'
 
 
 def main():
-    cyberpi.audio.add_vol(1)
+    cyberpi.audio.add_vol(0.1)
     cyberpi.led.on(0, 0, 0xFF)
 
     cyberpi.network.config_sta("htljoh-public", "joh12345")
@@ -19,7 +17,7 @@ def main():
     while True:
         b = cyberpi.network.is_connect()
         if b == False:
-            cyberpi.led.on(255, 0, 0)
+            cyberpi.led.on(0xFF, 0, 0)
             time.sleep(1)
         else:
             cyberpi.led.on(0, 0xFF, 0)
@@ -110,9 +108,14 @@ def main():
             elif command == "MISC":
                 # Code for miscalanious Commands
                 if extra == "LEDS":
-                    red = int('0x' + sepData[0], 16)
-                    green = int('0x' + sepData[1], 16)
-                    blue = int('0x' + sepData[2], 16)
+                    r = int('0x' + sepData[0], 16)
+                    g = int('0x' + sepData[1], 16)
+                    b = int('0x' + sepData[2], 16)
+                    if sepData[3] == '00':
+                        cyberpi.led.on(r, g, b)
+                    else:
+                        ID = int(sepData[3])
+                        cyberpi.led.on(r, g, b, id=ID)
 
             elif command == "DISC":
                 cyberpi.mbot2.EM_stop(port="all")
