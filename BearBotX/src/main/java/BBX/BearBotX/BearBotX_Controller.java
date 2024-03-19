@@ -49,13 +49,13 @@ class BearBotX_Controller {
     public String getData(){
         //return client.getData();
         return "example Data 1\nexample Data 2";
-    }
+    } 
 
     @PostMapping("/velocity")
     public void setVelocity(@RequestBody String speed){
         String[] temp=json_manager.toStringArray(speed);
         this.speed=Integer.parseInt(temp[temp.length-1]);
-        //System.out.println(this.speed);
+        System.out.println(this.speed);
     }
 
     @GetMapping("/disconnect")
