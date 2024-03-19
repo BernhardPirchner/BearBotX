@@ -97,6 +97,9 @@ def main():
                 elif extra == "TRLT":  # Turn left on the spot
                     print("Turn Left Commanded")
                     cyberpi.mbot2.turn(-angle, speed)
+                elif extra == "TRRT":  # Turn right on the spot
+                    print("Turn Right Commanded")
+                    cyberpi.mbot2.turn(angle, speed)
                 elif extra == "FWLT":  # Move Forward and turn left,
                     # ratio determined by angle imput [0-90]->[0.0-1.0]
                     # RPM Ratio = factor/1
@@ -104,6 +107,27 @@ def main():
                     factor = angle / 90
                     ltdrv = speed * factor
                     cyberpi.mbot2.drive_power(ltdrv, -speed)
+                elif extra == "FWRT":  # Move Forward and turn right,
+                    # ratio determined by angle imput [0-90]->[0.0-1.0]
+                    # RPM Ratio = factor/1
+                    print("Turn Forward Right Commanded")
+                    factor = angle / 90
+                    rtdrv = speed * factor
+                    cyberpi.mbot2.drive_power(speed,rtdrv)
+                elif extra == "BWLT":  # Move Backward and turn left,
+                    # ratio determined by angle imput [0-90]->[0.0-1.0]
+                    # RPM Ratio = factor/1
+                    print("Turn Backward Left Commanded")
+                    factor = angle / 90
+                    ltdrv = speed * factor
+                    cyberpi.mbot2.drive_power(ltdrv, speed)
+                elif extra == "BWRT":  # Move Backward and turn right,
+                    # ratio determined by angle imput [0-90]->[0.0-1.0]
+                    # RPM Ratio = factor/1
+                    print("Turn Backward Right Commanded")
+                    factor = angle / 90
+                    rtdrv = speed * factor
+                    cyberpi.mbot2.drive_power(-speed,rtdrv)
 
             elif command == "MISC":
                 # Code for miscalanious Commands
