@@ -96,10 +96,10 @@ def main():
                     cyberpi.mbot2.backward(speed)
                 elif extra == "TRLT":  # Turn left on the spot
                     print("Turn Left Commanded")
-                    cyberpi.mbot2.turn(-angle, speed)
+                    cyberpi.mbot2.drive_power(-speed,-speed)
                 elif extra == "TRRT":  # Turn right on the spot
                     print("Turn Right Commanded")
-                    cyberpi.mbot2.turn(angle, speed)
+                    cyberpi.mbot2.drive_power(speed,speed)
                 elif extra == "FWLT":  # Move Forward and turn left,
                     # ratio determined by angle imput [0-90]->[0.0-1.0]
                     # RPM Ratio = factor/1
@@ -113,7 +113,7 @@ def main():
                     print("Turn Forward Right Commanded")
                     factor = angle / 90
                     rtdrv = speed * factor
-                    cyberpi.mbot2.drive_power(speed,rtdrv)
+                    cyberpi.mbot2.drive_power(speed,-rtdrv)
                 elif extra == "BWLT":  # Move Backward and turn left,
                     # ratio determined by angle imput [0-90]->[0.0-1.0]
                     # RPM Ratio = factor/1
