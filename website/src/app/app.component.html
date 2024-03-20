@@ -15,7 +15,6 @@
   <span>{{ speed }}</span>
 </div>
 
-<!--<div *ngIf="sensorData">-->
 <div class="sensor-container">
   <h2>Sensor Data:</h2>
   <pre>{{ sensorData }}</pre>
@@ -30,7 +29,13 @@
   </ul>
 </div>
 
+
+
 <h1>Color Picker Demo</h1>
+<div>
+  <input type="checkbox" id="applySameColor" name="applySameColor" [(ngModel)]="applySameColor">
+  <label for="applySameColor">Gleiche Farbe für alle LEDs anwenden</label>
+</div>
 <div>
   <input type="color" id="head1" name="head1" [value]="colors[0]" (input)="onColorChanged($event, 1)">
 </div>
@@ -46,3 +51,5 @@
 <div>
   <input type="color" id="head5" name="head5" [value]="colors[4]" (input)="onColorChanged($event, 5)">
 </div>
+
+

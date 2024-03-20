@@ -15,8 +15,8 @@ export class AppComponent implements OnInit {
   sensorData: string = '';
   mbotSelection: MbotSelection[] = [];
   colors: string[] = ['#e66465', '#e66465', '#e66465', '#e66465', '#e66465'];
-
-
+  intervalId: any;
+  applySameColor: boolean = false;
   constructor(private dataService: DataService, private http: HttpClient) { }
 
   ngOnInit() {
@@ -60,26 +60,119 @@ export class AppComponent implements OnInit {
     );
   }
 
-  @HostListener('document:keydown', ['$event'])
-  handleKeyboardEvent(event: KeyboardEvent) {
-    switch (event.key) {
-      case 'w':
-        this.sendControlCommand('F');
-        break;
-      case 'a':
-        this.sendControlCommand('L');
-        break;
-      case 's':
-        this.sendControlCommand('B');
-        break;
-      case 'd':
-        this.sendControlCommand('R');
-        break;
-    }
+  /*pressedKeys: Set<string> = new Set<string>();
+  combinedCommand: string = '';
+
+@HostListener('document:keydown', ['$event'])
+handleKeyDownEvent(event: KeyboardEvent) {
+  this.pressedKeys.add(event.key);
+
+  this.updateCombinedCommand();
+
+  if (!this.intervalId && this.combinedCommand) {
+    this.intervalId = setInterval(() => {
+      if (this.combinedCommand) {
+        
+        this.sendControlCommand(this.combinedCommand);
+      }
+    }, 200);
   }
+}
+
+@HostListener('document:keyup', ['$event'])
+handleKeyUpEvent(event: KeyboardEvent) {
+  this.pressedKeys.delete(event.key);
+
+  this.updateCombinedCommand();
+
+  if (this.pressedKeys.size === 0 || !this.combinedCommand) {
+    clearInterval(this.intervalId);
+    this.intervalId = null;
+  }
+}
+
+updateCombinedCommand() {
+  this.combinedCommand = '';
+
+  if (this.pressedKeys.has('w')) this.combinedCommand += 'Forward';
+  if (this.pressedKeys.has('s')) this.combinedCommand += 'Backward';
+  if (this.pressedKeys.has('a')) this.combinedCommand += 'Left';
+  if (this.pressedKeys.has('d')) this.combinedCommand += 'Right';
+}
+
+sendControlCommand(direction: string) {
+  this.http.post('http://10.10.2.120:6968/move', { direction }).subscribe(
+    () => console.log('Control command sent successfully.'),
+    error => console.error('Error sending control command:', error)
+  );
+}*/
+
+pressedKeys: Set<string> = new Set<string>();
+combinedCommand: string = '';
+
+@HostListener('document:keydown', ['$event'])
+handleKeyDownEvent(event: KeyboardEvent) {
+  this.pressedKeys.add(event.key);
+
+  this.updateCombinedCommand();
+
+  if (!this.intervalId && this.combinedCommand) {
+    this.intervalId = setInterval(() => {
+      if (this.combinedCommand) {
+
+        const formattedCommand = this.convertCombinedCommand(this.combinedCommand);
+        this.sendControlCommand(formattedCommand);
+      }
+    }, 200);
+  }
+}
+
+    @HostListener('document:keyup', ['$event'])
+    handleKeyUpEvent(event: KeyboardEvent) {
+      this.pressedKeys.delete(event.key);
+
+      this.updateCombinedCommand();
+
+      if (this.pressedKeys.size === 0 || !this.combinedCommand) {
+        clearInterval(this.intervalId);
+        this.intervalId = null;
+      }
+    }
+
+    updateCombinedCommand() {
+      this.combinedCommand = '';
+
+      if (this.pressedKeys.has('w')) this.combinedCommand += 'Forward';
+      if (this.pressedKeys.has('s')) this.combinedCommand += 'Backward';
+      if (this.pressedKeys.has('a')) this.combinedCommand += 'Left';
+      if (this.pressedKeys.has('d')) this.combinedCommand += 'Right';
+    }
+
+    convertCombinedCommand(combinedCommand: string): string {
+      switch (combinedCommand) {
+        case 'ForwardLeft':
+          return 'FWLT';
+        case 'ForwardRight':
+          return 'FWRT';
+        case 'BackwardLeft':
+          return 'BWLT';
+        case 'BackwardRight':
+          return 'BWRT';
+        case 'Forward':
+          return 'FWST';
+        case 'Left':
+          return 'TRLT';
+        case 'Right':
+          return 'TRRT';
+        case 'Backward':
+          return 'BWST';
+        default:
+          return combinedCommand;
+      }
+    }
 
   sendControlCommand(direction: string) {
-    this.http.post('http://10.10.2.120:6968/direction', { direction }).subscribe(
+    this.http.post('http://10.10.2.120:6968/move', { direction }).subscribe(
       () => console.log('Control command sent successfully.'),
       error => console.error('Error sending control command:', error)
     );
@@ -119,12 +212,24 @@ export class AppComponent implements OnInit {
   onColorChanged(event: any, ledNumber: number) {
     const color = event.target.value;
     this.colors[ledNumber - 1] = color;
-    this.sendColorsToServer(this.colors);
+    //this.sendColorsToServer(this.colors);
+
+    if (this.applySameColor) {
+      this.updateAllColors(color);
+    } else {
+      this.sendColorToServer(color, ledNumber);
+    }
   }
 
-  sendColorsToServer(colors: string[]) {
+  updateAllColors(color: string) {
+    this.colors = Array(5).fill(color);
+    this.sendColorToServer(color, 0);
+  }
+
+  sendColorToServer(color: string, ledNumber: number) { //s
+    const formattedLedNumber = ledNumber.toString().padStart(2, '0')
     const url = 'http://10.10.2.120:6968/color';
-    this.http.post(url, { colors }).subscribe(
+    this.http.post(url, { color, ledNumber: formattedLedNumber }).subscribe(
       (response) => {
         console.log('Colors sent to server successfully:', response);
       },
