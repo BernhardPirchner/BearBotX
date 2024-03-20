@@ -21,7 +21,7 @@ def main():
             time.sleep(1)
         else:
             cyberpi.led.on(0, 0xFF, 0)
-            cyberpi.audio.play("ring")
+            #cyberpi.audio.play("ring")
             break
 
     ip = cyberpi.network.get_ip()
@@ -64,7 +64,7 @@ def main():
             # Continuously get Commands from Client
             # cyberpi.led.on(0xFF,0xFF,0xFF)
             data = client_sock.recv(1024)
-            dataframe = data.decode('utf-8')
+            dataframe = data.decode('utf-8').split(';')[1]
             print("###INCOMING COMMAND###")
             print("Dataframe", dataframe)
             command, extra, data = dataframe.split(':')
