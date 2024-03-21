@@ -11,7 +11,7 @@ import java.util.ArrayList;
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 class BearBotX_Controller {
-    MBotListener mbotListener=null;
+    MBotListener mbotListener;
     @Bean
     public CommandLineRunner runner(TaskExecutor taskExecutor){
         return new CommandLineRunner() {
@@ -49,7 +49,7 @@ class BearBotX_Controller {
     public String getData(){
         //return client.getData();
         return "example Data 1\nexample Data 2";
-    } 
+    }
 
     @PostMapping("/velocity")
     public void setVelocity(@RequestBody String speed){
@@ -73,24 +73,32 @@ class BearBotX_Controller {
     @PostMapping("/move")
     public void listen(@RequestBody String dir){
         String[] dirArray=json_manager.toStringArray(dir);
-        System.out.println(dir);
-        String command="MOVE:FWST:"+speed+",000,RS";
+        //System.out.println(dir);
+        //System.out.println(dirArray[1]);
+        String command="";
+
+        if(dirArray[1].equals("FWLT")||dirArray[1].equals("FWRT")||dirArray[1].equals("BWLT")||dirArray[1].equals("BWRT")){
+             command="MOVE:"+dirArray[1]+":"+speed+",45,RS";
+        }else{
+             command="MOVE:"+dirArray[1]+":"+speed+",000,RS";
+        }
         System.out.println(command);
         //mBot.send(command);
     }
 
     @GetMapping("/mbot_selection")
     public ArrayList<String> mbotSelection(){
-        ArrayList<String> list=new ArrayList<>();
-        list.add("Device 1, 0.0.0.1");
-        list.add("Device 2, 0.0.0.2");
-        list.add("Device 3, 0.0.0.3");
-
-        return list;
+        return mbotListener.getList();
     }
 
     @PostMapping("/color")
     public void ledColor(@RequestBody String colors){
         System.out.println(colors);
+
+        String[] dirLedColor= json_manager.toStringArray(colors);
+        char[] hex=dirLedColor[1].toCharArray();
+        String command="MISC:LEDS:"+String.valueOf(hex[1]).toUpperCase()+String.valueOf(hex[2]).toUpperCase()+","+String.valueOf(hex[3]).toUpperCase()+String.valueOf(hex[4]).toUpperCase()+","+String.valueOf(hex[5]).toUpperCase()+String.valueOf(hex[6]).toUpperCase()+","+dirLedColor[3];
+        System.out.println(command);
+        mBot.send(command);
     }
 }

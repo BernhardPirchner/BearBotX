@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class MBotListener implements Runnable {
-    ServerSocket server=null;
-    ArrayList<String> list=new ArrayList<>();
+    private ServerSocket server=null;
+    private ArrayList<String> list=new ArrayList<>();
 
     public MBotListener(){
         try {
@@ -28,6 +28,7 @@ public class MBotListener implements Runnable {
     public void run() {
         while(true){
             Socket client=null;
+            list.add("Ich bin der BearBot!, 10.10.2.120");
 
             try{
                 client=server.accept();
@@ -47,5 +48,9 @@ public class MBotListener implements Runnable {
                 System.out.println();
             }
         }
+    }
+
+    public ArrayList<String> getList(){
+        return list;
     }
 }
