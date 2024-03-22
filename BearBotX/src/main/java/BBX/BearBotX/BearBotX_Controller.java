@@ -35,10 +35,11 @@ class BearBotX_Controller {
 
     @PostMapping("/connect")
     public String connect(@RequestBody String ip){
-        String test;
+        String test="";
         try{
             System.out.println(ip);
-            test= mBot.connect(ip);
+            String[] ipArray=json_manager.toStringArray(ip);
+            test= mBot.connect(ipArray[1]);
         }catch(Exception ex){
             return "Exception:\n"+ ex.getMessage();
         }
@@ -60,14 +61,14 @@ class BearBotX_Controller {
 
     @GetMapping("/disconnect")
     public String disconnect(){
-        String answer="Disconnection was unsuccessful";
-        try
-        {
-            answer= mBot.closeConnection();
+        String test="";
+        try{
+            mBot.send(";DISC:0:0");
+            test= mBot.disconnect();
         }catch(Exception ex){
-            answer= "Disconnect was unsuccessful\nException: "+ex.getMessage();
+            return "Exception:\n"+ ex.getMessage();
         }
-        return answer;
+        return test;
     }
 
     @PostMapping("/move")
@@ -82,8 +83,8 @@ class BearBotX_Controller {
         }else{
              command="MOVE:"+dirArray[1]+":"+speed+",000,RS";
         }
-        System.out.println(command);
-        //mBot.send(command);
+        System.out.println(";"+command);
+        mBot.send(";"+command);
     }
 
     @GetMapping("/mbot_selection")
@@ -98,7 +99,7 @@ class BearBotX_Controller {
         String[] dirLedColor= json_manager.toStringArray(colors);
         char[] hex=dirLedColor[1].toCharArray();
         String command="MISC:LEDS:"+String.valueOf(hex[1]).toUpperCase()+String.valueOf(hex[2]).toUpperCase()+","+String.valueOf(hex[3]).toUpperCase()+String.valueOf(hex[4]).toUpperCase()+","+String.valueOf(hex[5]).toUpperCase()+String.valueOf(hex[6]).toUpperCase()+","+dirLedColor[3];
-        System.out.println(command);
-        mBot.send(command);
+        System.out.println(";"+command);
+        mBot.send(";"+command);
     }
 }

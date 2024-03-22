@@ -51,7 +51,7 @@ public class MBot {
         return in.nextLine();
     }
 
-    public String closeConnection(){
+    public String disconnect(){
         String answer="Disconnection was unsuccessful";
         if(server!=null){
             try{
