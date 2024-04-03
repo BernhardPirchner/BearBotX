@@ -15,12 +15,6 @@ public class MBot {
 
     }
 
-    public String listen() throws IOException {
-        server  =new Socket("10.10.3.255", 6969);
-        in=new Scanner(server.getInputStream());
-        return in.nextLine();
-    }
-
     public String connect(String ip) {
         try{
             server=new Socket(ip, 6969);
@@ -36,19 +30,28 @@ public class MBot {
     public void send(String s){
         if(server != null) {
             try {
-                //byte[] command=s.getBytes("UTF8");
-                //System.out.println(command);
-                System.out.println("Hallo");
+                //System.out.println("Hallo");
                 out.println(s);
             } catch (Exception ex) {
+                System.out.println("sendException");
                 System.out.println(ex.getMessage());
             }
         }
     }
 
-    public String getData(){
-        out.println("hole Daten");
-        return in.nextLine();
+    public String getData(String s){
+        if(server!=null){
+            try{
+                send(s);
+                String answer= in.nextLine();
+                System.out.println(answer);
+                return answer;
+            }catch(Exception ex){
+                System.out.println(ex.getMessage());
+                return "Error receiving data\n"+ex.getCause();
+            }
+        }
+        return "Not Connected";
     }
 
     public String disconnect(){

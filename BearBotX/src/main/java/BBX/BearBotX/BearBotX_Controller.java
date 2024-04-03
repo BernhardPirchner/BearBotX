@@ -7,17 +7,17 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 class BearBotX_Controller {
-    MBotListener mbotListener;
     @Bean
     public CommandLineRunner runner(TaskExecutor taskExecutor){
         return new CommandLineRunner() {
             @Override
             public void run(String... args) throws Exception {
-                taskExecutor.execute(mbotListener=new MBotListener());
+                taskExecutor.execute(new MBotListener());
             }
         };
     }
@@ -48,8 +48,8 @@ class BearBotX_Controller {
 
     @GetMapping("/sensor_data")
     public String getData(){
-        //return client.getData();
-        return "example Data 1\nexample Data 2";
+        return mBot.getData(";DATA:0:0");
+        //return json_manager.toStringArray(mBot.getData(";DATA:0:0"));
     }
 
     @PostMapping("/velocity")
@@ -89,7 +89,7 @@ class BearBotX_Controller {
 
     @GetMapping("/mbot_selection")
     public ArrayList<String> mbotSelection(){
-        return mbotListener.getList();
+        return MBotListener.getDevices();
     }
 
     @PostMapping("/color")

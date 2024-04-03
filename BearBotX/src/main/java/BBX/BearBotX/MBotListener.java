@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class MBotListener implements Runnable {
     private ServerSocket server=null;
-    private ArrayList<String> list=new ArrayList<>();
+    private static ArrayList<String> list=new ArrayList<>();
 
     public MBotListener(){
         try {
@@ -18,10 +18,6 @@ public class MBotListener implements Runnable {
         }catch(Exception ex){
             System.out.println(ex.getMessage());
         }
-    }
-
-    public ArrayList<String> getDevices(){
-        return list;
     }
 
     @Override
@@ -51,6 +47,10 @@ public class MBotListener implements Runnable {
     }
 
     public ArrayList<String> getList(){
+        return list;
+    }
+
+    public static ArrayList<String> getDevices(){
         return list;
     }
 }
