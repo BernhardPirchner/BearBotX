@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8f54ed0-56af-44b3-9f85-9046a5c76b2f" name="Changes" comment="Fixed command stacking error">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="b8f54ed0-56af-44b3-9f85-9046a5c76b2f" name="Changes" comment="small test">
+      <change beforePath="$PROJECT_DIR$/BotScript.py" beforeDir="false" afterPath="$PROJECT_DIR$/BotScript.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,7 +105,7 @@
       <workItem from="1710878770646" duration="294000" />
       <workItem from="1710918876178" duration="2391000" />
       <workItem from="1710941739523" duration="1377000" />
-      <workItem from="1712124854668" duration="1190000" />
+      <workItem from="1712124854668" duration="1875000" />
     </task>
     <task id="LOCAL-00001" summary="Fixed Connection">
       <option name="closed" value="true" />
@@ -163,7 +163,15 @@
       <option name="project" value="LOCAL" />
       <updated>1710943107507</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="small test">
+      <option name="closed" value="true" />
+      <created>1712128255211</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1712128255211</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -188,7 +196,8 @@
     <MESSAGE value="Added Right sided Movement Commands" />
     <MESSAGE value="Fixed wrong direction parameters" />
     <MESSAGE value="Fixed command stacking error" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed command stacking error" />
+    <MESSAGE value="small test" />
+    <option name="LAST_COMMIT_MESSAGE" value="small test" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/pythonProject$main.coverage" NAME="main Coverage Results" MODIFIED="1710317143072" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
