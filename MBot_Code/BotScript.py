@@ -8,7 +8,7 @@ import json as jsonlib
 
 
 def main():
-    cyberpi.audio.add_vol(0.1)
+    cyberpi.audio.set_vol(0.5)
     cyberpi.led.on(0, 0, 0xFF)
 
     cyberpi.network.config_sta("htljoh-public", "joh12345")
@@ -20,7 +20,7 @@ def main():
             time.sleep(1)
         else:
             cyberpi.led.on(0, 0xFF, 0)
-            # cyberpi.audio.play("ring")
+            cyberpi.audio.play("ring")
             break
 
     ip = cyberpi.network.get_ip()
@@ -61,7 +61,7 @@ def main():
 
         while True:
             # Continuously get Commands from Client
-            # cyberpi.led.on(0xFF,0xFF,0xFF)
+
             data = client_sock.recv(1024)
             dataframe = data.decode('utf-8').split(';')[1]
             print("###INCOMING COMMAND###")
@@ -88,21 +88,28 @@ def main():
                 elif extra == "FWST":  # Move Forward in a straight line
                     print("Forward Commanded")
                     print(sepData[0])
+                    cyberpi.led.off()
                     cyberpi.mbot2.forward(speed)
                 elif extra == "BWST":  # Move Backward in a straight line
                     print("Backward Commanded")
                     print(sepData[0])
+                    cyberpi.led.off()
+                    cyberpi.led.on(0xFF, 0xFF, 0xFF, id=2)
+                    cyberpi.led.on(0xFF, 0xFF, 0xFF, id=4)
                     cyberpi.mbot2.backward(speed)
                 elif extra == "TRLT":  # Turn left on the spot
                     print("Turn Left Commanded")
+                    cyberpi.led.off()
                     cyberpi.mbot2.drive_power(-speed, -speed)
                 elif extra == "TRRT":  # Turn right on the spot
                     print("Turn Right Commanded")
+                    cyberpi.led.off()
                     cyberpi.mbot2.drive_power(speed, speed)
                 elif extra == "FWLT":  # Move Forward and turn left,
                     # ratio determined by angle imput [0-90]->[0.0-1.0]
                     # RPM Ratio = factor/1
                     print("Turn Forward Left Commanded")
+                    cyberpi.led.off()
                     factor = angle / 90
                     ltdrv = speed * factor
                     cyberpi.mbot2.drive_power(ltdrv, -speed)
@@ -110,6 +117,7 @@ def main():
                     # ratio determined by angle imput [0-90]->[0.0-1.0]
                     # RPM Ratio = factor/1
                     print("Turn Forward Right Commanded")
+                    cyberpi.led.off()
                     factor = angle / 90
                     rtdrv = speed * factor
                     cyberpi.mbot2.drive_power(speed, -rtdrv)
@@ -117,6 +125,8 @@ def main():
                     # ratio determined by angle imput [0-90]->[0.0-1.0]
                     # RPM Ratio = factor/1
                     print("Turn Backward Left Commanded")
+                    cyberpi.led.off()
+                    cyberpi.led.on(0xFF, 0xFF, 0xFF, id=2)
                     factor = angle / 90
                     ltdrv = speed * factor
                     cyberpi.mbot2.drive_power(-ltdrv, speed)
@@ -124,6 +134,8 @@ def main():
                     # ratio determined by angle imput [0-90]->[0.0-1.0]
                     # RPM Ratio = factor/1
                     print("Turn Backward Right Commanded")
+                    cyberpi.led.off()
+                    cyberpi.led.on(0xFF, 0xFF, 0xFF, id=4)
                     factor = angle / 90
                     rtdrv = speed * factor
                     cyberpi.mbot2.drive_power(-speed, rtdrv)
@@ -165,25 +177,19 @@ def getSensorData():
     roll = cyberpi.get_roll()
     yaw = cyberpi.get_yaw()
     distance = cyberpi.ultrasonic2.get(index=1)
-    L2 = cyberpi.quad_rgb_sensor.get_color('l2', index=1)
-    L1 = cyberpi.quad_rgb_sensor.get_color('l1', index=1)
-    R1 = cyberpi.quad_rgb_sensor.get_color('r1', index=1)
-    R2 = cyberpi.quad_rgb_sensor.get_color('r2', index=1)
+    RGBSensorData = cyberpi.quad_rgb_sensor.get_line_sta(index=1)
+    LineS = '{0:04b}'.format(RGBSensorData)
+    print(LineS)
+    L2 = LineS[0]
+    L1 = LineS[1]
+    R1 = LineS[2]
+    R2 = LineS[3]
 
     json_string = jsonlib.dumps(
         {'light': light, 'volume': volume, 'pitch': pitch, 'roll': roll, 'yaw': yaw, 'distance': distance, 'L1': L1,
          'L2': L2, 'R1': R1, 'R2': R2})
     json_string = json_string + "\n"
     return json_string
-
-
-try:
-    main()
-except BaseException as ex:
-    cyberpi.led.off()
-    print("ERROR")
-    cyberpi.mbot2.EM_stop(port="all")
-    cyberpi.console.clear()
 
 
 def moveFW(time):
@@ -198,6 +204,20 @@ def moveFW(time):
 
     cyberpi.console.println(value)
     cyberpi.console.clear()
+
+
+try:
+    main()
+except BaseException as ex:
+    cyberpi.led.off()
+    print("ERROR:", ex)
+    cyberpi.console.print("Error: ", ex)
+    cyberpi.mbot2.EM_stop(port="all")
+    cyberpi.console.clear()
+
+
+
+
 
 
 
