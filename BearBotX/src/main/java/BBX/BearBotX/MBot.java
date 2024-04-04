@@ -48,10 +48,11 @@ public class MBot {
                 return answer;
             }catch(Exception ex){
                 System.out.println(ex.getMessage());
-                return "Error receiving data\n"+ex.getCause();
+                return "{\"Error\":\"No_line\",\"Cause\":\""+ex.getMessage().replace(' ', '_')+"\"}";
             }
         }
-        return "Not Connected";
+        //System.out.println("{\"Error\":\"Not_Connected\"}");
+        return "{\"Error\":\"Not_Connected\"}";
     }
 
     public String disconnect(){

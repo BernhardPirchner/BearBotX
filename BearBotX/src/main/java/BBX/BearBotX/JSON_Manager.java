@@ -6,7 +6,7 @@ import java.util.List;
 
 public class JSON_Manager {
     public String[] toStringArray(String json){
-        String[] text=json.split("[\"{:},]");
+        String[] text=json.split("[\"{:,}]");
         //System.out.println("1");
         ArrayList<String> temp= new ArrayList<String>();
         for (String s:

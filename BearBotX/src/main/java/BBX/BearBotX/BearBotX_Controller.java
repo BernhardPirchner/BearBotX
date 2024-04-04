@@ -47,9 +47,14 @@ class BearBotX_Controller {
     }
 
     @GetMapping("/sensor_data")
-    public String getData(){
-        return mBot.getData(";DATA:0:0");
-        //return json_manager.toStringArray(mBot.getData(";DATA:0:0"));
+    public ArrayList<String> getData(){
+        String json= mBot.getData(";DATA:0:0");
+        String[] temp=json_manager.toStringArray(json);
+        ArrayList<String> data=new ArrayList<>();
+        for (int i=0; (i+1)<=temp.length ; i+=2){
+            data.add(temp[i]+": "+temp[i+1]);
+        }
+        return data;
     }
 
     @PostMapping("/velocity")
