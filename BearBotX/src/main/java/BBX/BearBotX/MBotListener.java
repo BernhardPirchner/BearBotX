@@ -1,19 +1,19 @@
 package BBX.BearBotX;
 
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class MBotListener implements Runnable {
-    private ServerSocket server=null;
+    DatagramSocket socket=null;
     private static ArrayList<String> list=new ArrayList<>();
 
-    public MBotListener(){
+    public MBotListener() {
         try {
-            server = new ServerSocket(6970);
+            socket=new DatagramSocket(6970);
+            socket.setBroadcast(true);
             run();
         }catch(Exception ex){
             System.out.println(ex.getMessage());
@@ -22,14 +22,14 @@ public class MBotListener implements Runnable {
 
     @Override
     public void run() {
+        byte[] buffer=new byte[1024];
+        DatagramPacket packet=new DatagramPacket(buffer, buffer.length);
         while(true){
-            Socket client=null;
-            list.add("Ich bin der BearBot!, 10.10.2.120");
-
             try{
-                client=server.accept();
-                Scanner in =new Scanner(client.getInputStream());
-                String s=in.nextLine();
+                socket.receive(packet);
+                String s=new String(packet.getData(), 0, packet.getLength());
+                System.out.println(s);
+
                 boolean x=true;
                 for (String bot:
                         list) {
@@ -40,8 +40,10 @@ public class MBotListener implements Runnable {
                 if(x){
                     list.add(s);
                 }
+
+                packet.setLength(buffer.length);
             }catch(Exception ex){
-                System.out.println();
+                System.out.println(ex.getMessage());
             }
         }
     }
