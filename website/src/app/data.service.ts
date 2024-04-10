@@ -23,10 +23,6 @@ export class DataService {
   sendSpeed(speed: number): Observable<any> {
     return this.http.post('http://10.10.2.120:6968/velocity', { speed });
   }
-
-  /*fetchMbotSelection(): Observable<any[]> {
-    return this.http.get<any[]>('http://10.10.2.120:6968/mbot_selection');
-  }*/
   
   fetchMbotSelection(): Observable<MbotSelection[]> {
     return this.http.get<string[]>('http://10.10.2.120:6968/mbot_selection').pipe(
@@ -37,5 +33,9 @@ export class DataService {
         });
       })
     );
+  }
+
+  fetchLightSensorData(): Observable<number[]> {
+    return this.http.get<number[]>('http://10.10.2.120:6968/light_sensor');
   }
 }
