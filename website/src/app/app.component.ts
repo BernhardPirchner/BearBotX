@@ -14,6 +14,7 @@ export class AppComponent implements OnInit {
   speed: number = 0;
   sensorData: string = '';
   mbotSelection: MbotSelection[] = [];
+  colors: string[] = ['#e66465', '#e66465', '#e66465', '#e66465', '#e66465'];
 
   constructor(private dataService: DataService, private http: HttpClient) { }
 
@@ -110,6 +111,24 @@ export class AppComponent implements OnInit {
       },
       error => {
         console.error('Error fetching Mbot selection:', error);
+      }
+    );
+  }
+
+  onColorChanged(event: any, ledNumber: number) {
+    const color = event.target.value;
+    this.colors[ledNumber - 1] = color;
+    this.sendColorsToServer(this.colors);
+  }
+ 
+  sendColorsToServer(colors: string[]) {
+    const url = 'http://10.10.2.120:6968/color';
+    this.http.post(url, { colors }).subscribe(
+      (response) => {
+        console.log('Colors sent to server successfully:', response);
+      },
+      (error) => {
+        console.error('Error sending colors to server:', error);
       }
     );
   }

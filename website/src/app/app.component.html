@@ -1,22 +1,199 @@
-<h1>Welcome to My Website</h1>
-<div class="message-container">
-  <h2>Received Message:</h2>
-  <pre>{{ receivedMessage }}</pre>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="app.component.css">
+    <title>Document</title>
+</head>
+<body class = "body">
+  <header class = "body-header" id = "home">
+    <div class = "body-header-logo">
+      <!--Background-->
+    </div>
+  </header>
 
-<div>
-  <label for="ipAddress">Enter mBot IP Address:</label>
-  <input type="text" id="ipAddress" name="ipAddress" [(ngModel)]="mBotIpAddress">
-  <button (click)="saveIpAddress()">Save</button>
-</div>
+  <header class="body-header-ul">
+    <nav class="body-header-ul-nav">
+        <ul class="body-header-ul-nav-itmes">
+            <li class="nav-item"><a href="#home" >Home</a></li>
+            <li class="nav-item"><a href="#members">Members</a></li>
+            <li class="nav-item"><a href="#about">About</a></li>
+            <li class="nav-item"><a href="#features">Features</a></li>
+        </ul>
+    </nav>
+  </header>
 
-<div>
-  <input type="range" min="0" max="100" [(ngModel)]="speed" (input)="updateSpeed()">
-  <span>{{ speed }}</span>
-</div>
+  <main class = "body-main" id = "members">
+  <!-- Bernhard Pirchner -->
+  <div class="body-main-members-container body-main-members-container-pirchner">
+    <div class="body-main-members-container-image body-main-members-container-image-pirchner"></div>
+    <div class="body-main-members-container-content">
+      <div class="body-main-members-container-name">Bernhard Pirchner</div>
+      <div class="body-main-members-container-description">
+        Als Projektleiter ist es meine Aufgabe, die verschiedenen Aspekte unseres Systemplanungsprojekts 
+        zu koordinieren und sicherzustellen, dass wir unsere Ziele rechtzeitig und effizient erreichen. 
+        Ich bin leidenschaftlich daran interessiert, innovative Lösungen zu entwickeln und das Potenzial 
+        des MBot voll auszuschöpfen. Ich freue mich darauf, mit unserem Team zusammenzuarbeiten, um eine 
+        herausragende Benutzeroberfläche zu gestalten, die die Benutzererfahrung auf ein neues Niveau hebt.
+      </div>
+    </div>
+  </div>
 
-<!--<div *ngIf="sensorData">-->
-<div class="sensor-container">
+  <!-- Daniel Brunhuber -->
+  <div class="body-main-members-container body-main-members-container-brunhuber">
+    <div class="body-main-members-container-image body-main-members-container-image-brunhuber"></div>
+    <div class="body-main-members-container-content">
+      <div class="body-main-members-container-name">Daniel Brunhuber</div>
+      <div class="body-main-members-container-description">
+        Hey, ich bin voller Begeisterung dabei, die Benutzeroberfläche (GUI) für unser 
+        Systemplanungsprojekt rund um den MBot zu gestalten! Mein Ziel ist es, eine Oberfläche 
+        zu entwickeln, die nicht nur funktional ist, sondern auch Spaß macht und die Neugier auf 
+        Technologie weckt. Ich freue mich darauf, die Grenzen der Kreativität zu überschreiten und 
+        eine GUI zu gestalten, die nicht nur unsere Benutzer begeistert, sondern auch einen Hauch von 
+        Magie in die Welt des MBot bringt!
+      </div>
+    </div>
+  </div>
+
+  
+
+  <!-- Fabian Beierschoder -->
+  <div class="body-main-members-container body-main-members-container-beierschoder">
+    <div class="body-main-members-container-image body-main-members-container-image-beierschoder"></div>
+    <div class="body-main-members-container-content">
+      <div class="body-main-members-container-name">Fabian Beierschoder</div>
+      <div class="body-main-members-container-description">
+        Als GitHub-Verantwortlicher in unserem Team kümmere ich mich leidenschaftlich um die Verwaltung und 
+        Pflege unserer Repositories. Ich arbeite daran, effiziente Entwicklungsprozesse zu gewährleisten und 
+        sicherzustellen, dass unser Code stets organisiert und sicher ist. Meine Aufgabe ist es, die 
+        Zusammenarbeit zu erleichtern und dazu beizutragen, dass unser Team sein volles Potenzial entfalten 
+        kann.
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Manuel Dürnberger -->
+  <div class="body-main-members-container body-main-members-container-duernberger">
+    <div class="body-main-members-container-image body-main-members-container-image-duernberger"></div>
+    <div class="body-main-members-container-content">
+      <div class="body-main-members-container-name">Manuel Dürnberger</div>
+      <div class="body-main-members-container-description">
+        Als Programmierer im Team stehe ich mit Leidenschaft hinter der Entwicklung unserer Software für das 
+        MBot-Systemplanungsprojekt. Ich liebe es, innovative Lösungen zu entwickeln und die Funktionalität 
+        unserer Anwendung zu verbessern. Mein Ziel ist es, robuste und benutzerfreundliche Software zu 
+        schaffen, die das volle Potenzial des MBot ausschöpft und die Benutzererfahrung bereichert.
+      </div>
+    </div>
+  </div>
+      
+  <!--Projekt beschreibung-->
+  <div class = "body-main-background" id = "about">
+    <div class = "body-main-background-container">
+      <div class="body-main-background-container-image"></div>
+        <div class="body-main-background-container-description">
+          Unser Projektziel ist es, verschiedene Anforderungen für den MBot umzusetzen. Dabei möchten wir 
+          eine vielseitige Software entwickeln, die es ermöglicht, den MBot effektiv und kreativ einzusetzen. 
+          Wir streben danach, eine Plattform zu schaffen, die sowohl für Bildungszwecke als auch für 
+          praktische Anwendungen geeignet ist und den Nutzern dabei hilft, das volle Potenzial des MBot 
+          auszuschöpfen.
+      </div>
+
+    </div>
+  </div>
+
+
+
+
+  <!--Buttons-->
+  <div class="body-main-buttons" id = "features">
+    <div class="button-container button-container-connection">
+      <button class="body-main-buttons-container body-main-buttons-container-conection" onclick="openPopupconection('popup-conection')"></button>
+      <h2 class = "buttons-headtitle">Connection</h2>
+    </div>
+    <div class="button-container">
+      <button class="body-main-buttons-container body-main-buttons-container-control" onclick="openPopupconection('popup-controle')"></button>
+      <h2 class = "buttons-headtitle">Control</h2>
+    </div>
+  
+    <div class="button-container">
+      <button class="body-main-buttons-container body-main-buttons-container-color"></button>
+      <h2 class = "buttons-headtitle">Color</h2>
+    </div>
+    <div class="button-container">
+      <button class="body-main-buttons-container body-main-buttons-container-sensor"></button>
+      <h2 class = "buttons-headtitle">Sensor</h2>
+    </div>
+    <div class="button-container">
+      <button class="body-main-buttons-container"></button>
+      <h2 class = "buttons-headtitle">SOON...</h2>
+    </div>
+  </div>
+  
+
+  <!--IDEE: Immer neue Fenster erstellen, der Button wird dan ausgegraut wenn das Fenster offen ist und man kann dan die anderen auch aufmachen-->
+
+  <div class="popup-container">
+    <div id="popup-conection" class="popup body-main-buttons-container-conection-popup">
+      <div class="popup-content">
+        <span class="close" onclick="closePopup('popup-conection')">&times;</span>
+        <h2>Connection</h2>
+        <div>
+          <label for="ipAddress">Enter mBot IP Address:</label>
+          <input type="text" id="ipAddress" name="ipAddress" [(ngModel)]="mBotIpAddress">
+          <button (click)="saveIpAddress()">Save</button>
+        </div>
+      </div>
+    </div>
+    
+    <div id="popup-controle" class="popup body-main-buttons-container-conection-popup">
+      <div class="popup-content">
+        <span class="close" onclick="closePopup('popup-controle')">&times;</span>
+        <h2>Control</h2>
+        <div>
+          <input type="range" min="0" max="100" [(ngModel)]="speed" (input)="updateSpeed()">
+          <span>{{ speed }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  
+
+
+  
+
+
+
+
+</main>
+    
+  <footer class = "body-footer">
+    <div class = "body-footer-image">
+      <!--Image-->
+    </div>
+    
+  </footer>
+
+<script src="app.component.js"></script>
+
+
+</body>
+
+
+
+</html>
+
+
+
+
+
+
+
+<div *ngIf="sensorData">
+<!--<div class="sensor-container">
   <h2>Sensor Data:</h2>
   <pre>{{ sensorData }}</pre>
 </div>
@@ -29,3 +206,38 @@
     </li>
   </ul>
 </div>
+
+
+
+<h1>Color Picker Demo</h1>
+<div>
+  <input type="color" id="head1" name="head1" [value]="colors[0]" (input)="onColorChanged($event, 1)">
+</div>
+<div>
+  <input type="color" id="head2" name="head2" [value]="colors[1]" (input)="onColorChanged($event, 2)">
+</div>
+<div>
+  <input type="color" id="head3" name="head3" [value]="colors[2]" (input)="onColorChanged($event, 3)">
+</div>
+<div>
+  <input type="color" id="head4" name="head4" [value]="colors[3]" (input)="onColorChanged($event, 4)">
+</div>
+<div>
+  <input type="color" id="head5" name="head5" [value]="colors[4]" (input)="onColorChanged($event, 5)">
+</div>-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
