@@ -5,6 +5,22 @@ import socket
 import network
 import math
 import json as jsonlib
+import _thread
+
+safetyMode = True
+
+
+def safeFunc(active):  # Function for Safe Mode Thread
+    print("Savety Thread Started")
+    while True:
+        if active:
+            distance = cyberpi.ultrasonic2.get(index=1)
+            if distance < 10:
+                # cyberpi.console.print("WALL DETECTED!")
+                cyberpi.mbot2.EM_stop(port="all")
+                cyberpi.audio.play('buzzing')
+                cyberpi.mbot2.straight(-5, speed=50)
+                cyberpi.mbot2.turn(180, speed=50)
 
 
 def main():
@@ -40,7 +56,7 @@ def main():
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
     s.bind(addr)
-    s.sendto(ip, ("10.10.3.255", 6969))
+    s.sendto(ip, ("10.10.3.255", 6970))
 
     cyberpi.console.println("Waiting for Connections")
     cyberpi.led.on(255, 31, 0)
@@ -49,6 +65,8 @@ def main():
     server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
     server_socket.bind(addr)
+
+    _thread.start_new_thread(safeFunc, [safetyMode])
 
     server_socket.listen(5)
     while True:
@@ -143,6 +161,7 @@ def main():
             elif command == "MISC":
                 # Code for miscalanious Commands
                 if extra == "LEDS":
+                    # Changing LEDS
                     r = int('0x' + sepData[0], 16)
                     g = int('0x' + sepData[1], 16)
                     b = int('0x' + sepData[2], 16)
@@ -151,6 +170,10 @@ def main():
                     else:
                         ID = int(sepData[3])
                         cyberpi.led.on(r, g, b, id=ID)
+
+                elif extra == "SAFE":
+                    # Toggle Safety Mode
+                    not safetyMode
 
             elif command == "DATA":
                 # Code for sending Data back to the client
@@ -167,7 +190,6 @@ def main():
         cyberpi.mbot2.EM_stop(port="all")
         cyberpi.console.clear()
         client_sock.close()
-        break
 
 
 def getSensorData():
@@ -214,10 +236,4 @@ except BaseException as ex:
     cyberpi.console.print("Error: ", ex)
     cyberpi.mbot2.EM_stop(port="all")
     cyberpi.console.clear()
-
-
-
-
-
-
 

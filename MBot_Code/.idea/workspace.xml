@@ -7,7 +7,6 @@
     <list default="true" id="b8f54ed0-56af-44b3-9f85-9046a5c76b2f" name="Changes" comment="Added Sensor Data Sending">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BotScript.py" beforeDir="false" afterPath="$PROJECT_DIR$/BotScript.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,6 +109,7 @@
       <workItem from="1712124854668" duration="2533000" />
       <workItem from="1712231339392" duration="2026000" />
       <workItem from="1712234487463" duration="40000" />
+      <workItem from="1712733818659" duration="101000" />
     </task>
     <task id="LOCAL-00001" summary="Fixed Connection">
       <option name="closed" value="true" />
