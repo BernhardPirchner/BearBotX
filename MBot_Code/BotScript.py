@@ -8,24 +8,30 @@ import json as jsonlib
 import _thread
 
 safetyMode = True
+acceptCommands = True
 
 
 def safeFunc(active):  # Function for Safe Mode Thread
     print("Savety Thread Started")
+    global acceptCommands
     while True:
         if active:
             distance = cyberpi.ultrasonic2.get(index=1)
-            if distance < 10:
-                # cyberpi.console.print("WALL DETECTED!")
+            if distance < 20:
+                print("<<<Wall Encountered>>>")
+                acceptCommands = False
                 cyberpi.mbot2.EM_stop(port="all")
                 cyberpi.audio.play('buzzing')
-                cyberpi.mbot2.straight(-5, speed=50)
+                cyberpi.mbot2.straight(-20, speed=100)
                 cyberpi.mbot2.turn(180, speed=50)
+                acceptCommands = True
 
 
 def main():
     cyberpi.audio.set_vol(0.5)
     cyberpi.led.on(0, 0, 0xFF)
+
+    global acceptCommands
 
     cyberpi.network.config_sta("htljoh-public", "joh12345")
 
@@ -89,8 +95,9 @@ def main():
             sepData = data.split(',')
             print("Data", sepData)
             # cyberpi.led.off()
+            print(acceptCommands)
 
-            if command == "MOVE":
+            if command == "MOVE" and acceptCommands == True:
                 # Code for handling Movement
                 speed = int(sepData[0])
                 angle = int(sepData[1])
