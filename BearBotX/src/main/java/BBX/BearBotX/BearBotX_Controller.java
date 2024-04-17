@@ -24,6 +24,8 @@ class BearBotX_Controller {
     MBot mBot =new MBot();
     JSON_Manager json_manager=new JSON_Manager();
 
+    private boolean[] light_sensors={false, false, false, false};
+
     private String text="Fabi L";
 
     private int speed=0;
@@ -53,9 +55,22 @@ class BearBotX_Controller {
         ArrayList<String> data=new ArrayList<>();
         for (int i=0; (i+1)<=temp.length ; i+=2){
             data.add(temp[i]+": "+temp[i+1]);
+            switch (temp[i]){
+                case "L2": light_sensors[0]= (Integer.parseInt(temp[i+1])==1); break;
+                case "L1": light_sensors[1]= (Integer.parseInt(temp[i+1])==1); break;
+                case "R1": light_sensors[2]= (Integer.parseInt(temp[i+1])==1); break;
+                case "R2": light_sensors[3]= (Integer.parseInt(temp[i+1])==1); break;
+                default: break;
+            }
         }
         return data;
     }
+
+    @GetMapping("/light_sensor")
+    public boolean[] lightSensor() {
+        return light_sensors;
+    }
+
 
     @PostMapping("/velocity")
     public void setVelocity(@RequestBody String speed){
@@ -70,6 +85,30 @@ class BearBotX_Controller {
         try{
             mBot.send(";DISC:0:0");
             test= mBot.disconnect();
+        }catch(Exception ex){
+            return "Exception:\n"+ ex.getMessage();
+        }
+        return test;
+    }
+
+    @GetMapping("/safety")
+    public String safety(){
+        String test="";
+        try{
+            mBot.send(";MISC:SAFE:0");
+            test= "worked";
+        }catch(Exception ex){
+            return "Exception:\n"+ ex.getMessage();
+        }
+        return test;
+    }
+
+    @GetMapping("/autopilot")
+    public String autopilot(){
+        String test="";
+        try{
+            mBot.send(";MISC:AUTO:0");
+            test= "worked";
         }catch(Exception ex){
             return "Exception:\n"+ ex.getMessage();
         }
