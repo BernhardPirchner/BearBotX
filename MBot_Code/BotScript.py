@@ -9,13 +9,15 @@ import _thread
 
 safetyMode = True
 acceptCommands = True
+autoPilot = False
 
 
 def safeFunc(active):  # Function for Safe Mode Thread
     print("Savety Thread Started")
     global acceptCommands
+    global autoPilot
     while True:
-        if active:
+        if safetyMode:
             distance = cyberpi.ultrasonic2.get(index=1)
             if distance < 20:
                 print("<<<Wall Encountered>>>")
@@ -25,13 +27,31 @@ def safeFunc(active):  # Function for Safe Mode Thread
                 cyberpi.mbot2.straight(-20, speed=100)
                 cyberpi.mbot2.turn(180, speed=50)
                 acceptCommands = True
+        elif autoPilot:
+            L2 = cyberpi.quad_rgb_sensor.get_gray('l2', index=1)
+            L1 = cyberpi.quad_rgb_sensor.get_gray('l1', index=1)
+            R1 = cyberpi.quad_rgb_sensor.get_gray('r1', index=1)
+            R2 = cyberpi.quad_rgb_sensor.get_gray('r2', index=1)
+
+            if L1 < 50 and R1 < 50:
+                cyberpi.mbot2.drive_power(30, -30)  # straight ahead
+                # cyberpi.led.on(255,0,0,id=2)
+                # cyberpi.led.on(255,0,0,id=4)
+            elif L1 < 50:
+                cyberpi.mbot2.drive_power(0, -30)  # turn left
+                # cyberpi.led.on(255,0,0,id=2)
+            elif R1 < 50:
+                cyberpi.mbot2.drive_power(30, 0)  # turn right
+                # callable.led.on(255,0,0,id=4)
 
 
 def main():
+    global safetyMode
     cyberpi.audio.set_vol(0.5)
     cyberpi.led.on(0, 0, 0xFF)
 
     global acceptCommands
+    global autoPilot
 
     cyberpi.network.config_sta("htljoh-public", "joh12345")
 
@@ -180,12 +200,30 @@ def main():
 
                 elif extra == "SAFE":
                     # Toggle Safety Mode
-                    not safetyMode
+                    cyberpi.console.print("Toggled Safetymode")
+                    print("Safety toggle")
+                    if safetyMode == True:
+                        safetyMode == False
+                    else:
+                        safetyMode == True
+
+                    autoPilot = False
+                    # cyberpi.console.clear()
+                    # cyberpi.console.print("Safe:"+str(safetyMode)+",Pilot:"+str(autoPilot))
+
+                elif extra == "AUTO":
+                    # Toggle Autopilot
+                    cyberpi.console.print("Toggled Autopilot")
+                    print("Autopilot toggle")
+                    safetyMode = False
+                    autoPilot = True
+                    # cyberpi.console.clear()
+                    # cyberpi.console.print("Safe:"+str(safetyMode)+",Pilot:"+str(autoPilot))
 
             elif command == "DATA":
                 # Code for sending Data back to the client
                 dataJson = getSensorData()
-                print(dataJson)
+                # print(dataJson)
                 client_sock.send(dataJson)
                 print("Data sent to client")
 
@@ -238,6 +276,7 @@ def moveFW(time):
 try:
     main()
 except BaseException as ex:
+    cyberpi.led.off()
     cyberpi.led.off()
     print("ERROR:", ex)
     cyberpi.console.print("Error: ", ex)
