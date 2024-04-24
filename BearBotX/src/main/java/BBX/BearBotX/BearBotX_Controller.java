@@ -1,5 +1,6 @@
 package BBX.BearBotX;
 
+import jdk.incubator.vector.DoubleVector;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
@@ -124,6 +125,8 @@ class BearBotX_Controller {
 
         if(dirArray[1].equals("FWLT")||dirArray[1].equals("FWRT")||dirArray[1].equals("BWLT")||dirArray[1].equals("BWRT")){
              command="MOVE:"+dirArray[1]+":"+speed+",45,RS";
+        }else if(dirArray[1].equals("TRRT")||dirArray[1].equals("TRLT")){
+            command="MOVE:"+dirArray[1]+":"+ Math.round(speed/2)+",000,RS";
         }else{
              command="MOVE:"+dirArray[1]+":"+speed+",000,RS";
         }
