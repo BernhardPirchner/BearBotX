@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8f54ed0-56af-44b3-9f85-9046a5c76b2f" name="Changes" comment="Safety mode Completed" />
+    <list default="true" id="b8f54ed0-56af-44b3-9f85-9046a5c76b2f" name="Changes" comment="Changes to Safety and Autopilot">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BotScript.py" beforeDir="false" afterPath="$PROJECT_DIR$/BotScript.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -108,6 +111,9 @@
       <workItem from="1712234487463" duration="40000" />
       <workItem from="1712733818659" duration="765000" />
       <workItem from="1713333300635" duration="716000" />
+      <workItem from="1713441247539" duration="671000" />
+      <workItem from="1713878855327" duration="58000" />
+      <workItem from="1713947394037" duration="4000" />
     </task>
     <task id="LOCAL-00001" summary="Fixed Connection">
       <option name="closed" value="true" />
@@ -197,7 +203,15 @@
       <option name="project" value="LOCAL" />
       <updated>1713333407218</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Changes to Safety and Autopilot">
+      <option name="closed" value="true" />
+      <created>1713441293250</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1713441293250</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -226,7 +240,8 @@
     <MESSAGE value="Added Sensor Data Sending" />
     <MESSAGE value="Added Safety Mode" />
     <MESSAGE value="Safety mode Completed" />
-    <option name="LAST_COMMIT_MESSAGE" value="Safety mode Completed" />
+    <MESSAGE value="Changes to Safety and Autopilot" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changes to Safety and Autopilot" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/pythonProject$main.coverage" NAME="main Coverage Results" MODIFIED="1710317143072" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

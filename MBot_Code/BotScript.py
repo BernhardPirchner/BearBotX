@@ -13,45 +13,47 @@ autoPilot = False
 
 
 def safeFunc(active):  # Function for Safe Mode Thread
-    print("Savety Thread Started")
+    # print("Savety Thread Started")
     global acceptCommands
     global autoPilot
+    global safetyMode
     while True:
+        # print("Safe:",safetyMode,",Auto:",autoPilot)
         if safetyMode:
             distance = cyberpi.ultrasonic2.get(index=1)
-            if distance < 20:
+            if distance < 10:
                 print("<<<Wall Encountered>>>")
                 acceptCommands = False
                 cyberpi.mbot2.EM_stop(port="all")
                 cyberpi.audio.play('buzzing')
-                cyberpi.mbot2.straight(-20, speed=100)
-                cyberpi.mbot2.turn(180, speed=50)
+                cyberpi.mbot2.straight(-10, speed=100)
+                cyberpi.mbot2.turn(180, speed=100)
                 acceptCommands = True
-        elif autoPilot:
-            L2 = cyberpi.quad_rgb_sensor.get_gray('l2', index=1)
+        if autoPilot:
+            # L2 = cyberpi.quad_rgb_sensor.get_gray('l2', index = 1)
             L1 = cyberpi.quad_rgb_sensor.get_gray('l1', index=1)
             R1 = cyberpi.quad_rgb_sensor.get_gray('r1', index=1)
-            R2 = cyberpi.quad_rgb_sensor.get_gray('r2', index=1)
+            # R2 = cyberpi.quad_rgb_sensor.get_gray('r2', index = 1)
 
             if L1 < 50 and R1 < 50:
                 cyberpi.mbot2.drive_power(30, -30)  # straight ahead
                 # cyberpi.led.on(255,0,0,id=2)
                 # cyberpi.led.on(255,0,0,id=4)
-            elif L1 < 50:
+            elif R1 > 50:
                 cyberpi.mbot2.drive_power(0, -30)  # turn left
                 # cyberpi.led.on(255,0,0,id=2)
-            elif R1 < 50:
+            elif L1 > 50:
                 cyberpi.mbot2.drive_power(30, 0)  # turn right
                 # callable.led.on(255,0,0,id=4)
 
 
 def main():
-    global safetyMode
-    cyberpi.audio.set_vol(0.5)
+    cyberpi.audio.set_vol(1)
     cyberpi.led.on(0, 0, 0xFF)
 
     global acceptCommands
     global autoPilot
+    global safetyMode
 
     cyberpi.network.config_sta("htljoh-public", "joh12345")
 
@@ -109,13 +111,13 @@ def main():
             data = client_sock.recv(1024)
             dataframe = data.decode('utf-8').split(';')[1]
             print("###INCOMING COMMAND###")
-            print("Dataframe", dataframe)
+            # print("Dataframe", dataframe)
             command, extra, data = dataframe.split(':')
             print(command, ":", extra, ":", data)
             sepData = data.split(',')
-            print("Data", sepData)
+            # print("Data", sepData)
             # cyberpi.led.off()
-            print(acceptCommands)
+            # print(acceptCommands)
 
             if command == "MOVE" and acceptCommands == True:
                 # Code for handling Movement
@@ -123,11 +125,10 @@ def main():
                 angle = int(sepData[1])
                 style = sepData[2]
 
-                print("Recieved Movement Command")
+                # print("Recieved Movement Command")
                 if extra == "STOP":  # Stop the Robot
                     print("STOP Commanded")
                     cyberpi.mbot2.EM_stop(port="all")
-                    print("Test")
                     cyberpi.led.on(0xFF, 0x00, 0x00, id=1)
                     cyberpi.led.on(0xFF, 0x00, 0x00, id=5)
                 elif extra == "FWST":  # Move Forward in a straight line
@@ -200,14 +201,15 @@ def main():
 
                 elif extra == "SAFE":
                     # Toggle Safety Mode
-                    cyberpi.console.print("Toggled Safetymode")
+                    # cyberpi.console.print("Toggled Safetymode")
                     print("Safety toggle")
                     if safetyMode == True:
-                        safetyMode == False
+                        safetyMode = False
                     else:
-                        safetyMode == True
+                        safetyMode = True
 
                     autoPilot = False
+                    print(safetyMode)
                     # cyberpi.console.clear()
                     # cyberpi.console.print("Safe:"+str(safetyMode)+",Pilot:"+str(autoPilot))
 
@@ -215,8 +217,8 @@ def main():
                     # Toggle Autopilot
                     cyberpi.console.print("Toggled Autopilot")
                     print("Autopilot toggle")
-                    safetyMode = False
                     autoPilot = True
+                    print(autoPilot)
                     # cyberpi.console.clear()
                     # cyberpi.console.print("Safe:"+str(safetyMode)+",Pilot:"+str(autoPilot))
 
@@ -244,17 +246,21 @@ def getSensorData():
     roll = cyberpi.get_roll()
     yaw = cyberpi.get_yaw()
     distance = cyberpi.ultrasonic2.get(index=1)
+    battery = cyberpi.get_battery
+    gyrox = str(cyberpi.get_gyro("x"))
+    gyroy = str(cyberpi.get_gyro("y"))
+    gyroz = str(cyberpi.get_gyro("z"))
     RGBSensorData = cyberpi.quad_rgb_sensor.get_line_sta(index=1)
     LineS = '{0:04b}'.format(RGBSensorData)
-    print(LineS)
+    # print(LineS)
     L2 = LineS[0]
     L1 = LineS[1]
     R1 = LineS[2]
     R2 = LineS[3]
 
     json_string = jsonlib.dumps(
-        {'light': light, 'volume': volume, 'pitch': pitch, 'roll': roll, 'yaw': yaw, 'distance': distance, 'L1': L1,
-         'L2': L2, 'R1': R1, 'R2': R2})
+        {'light': light, 'battery': battery, 'volume': volume, 'gyrox': gyrox, 'gyroy': gyroy, 'gyroz': gyroz,
+         'pitch': pitch, 'roll': roll, 'yaw': yaw, 'distance': distance, 'L1': L1, 'L2': L2, 'R1': R1, 'R2': R2})
     json_string = json_string + "\n"
     return json_string
 
@@ -277,9 +283,8 @@ try:
     main()
 except BaseException as ex:
     cyberpi.led.off()
-    cyberpi.led.off()
     print("ERROR:", ex)
     cyberpi.console.print("Error: ", ex)
     cyberpi.mbot2.EM_stop(port="all")
-    cyberpi.console.clear()
+    # cyberpi.console.clear()
 
