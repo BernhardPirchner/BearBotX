@@ -1,6 +1,6 @@
 package BBX.BearBotX;
 
-import jdk.incubator.vector.DoubleVector;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
@@ -36,8 +36,9 @@ class BearBotX_Controller {
         return text;
     }
 
-    @PostMapping("/connect")
-    public String connect(@RequestBody String ip){
+    @PostMapping("/connect") //Wenn bereits connection besteht darf nur acitve client disconnecten
+    public String connect(@RequestBody String ip, HttpServletRequest request){
+        System.out.println(request.getRemoteAddr());
         String test="";
         try{
             System.out.println(ip);
@@ -49,7 +50,7 @@ class BearBotX_Controller {
         return test;
     }
 
-    @GetMapping("/sensor_data")
+    @GetMapping("/sensor_data") //Intervall bei mir ausführen und Clients nur Daten schicken
     public ArrayList<String> getData(){
         String json= mBot.getData(";DATA:0:0");
         String[] temp=json_manager.toStringArray(json);
@@ -67,20 +68,20 @@ class BearBotX_Controller {
         return data;
     }
 
-    @GetMapping("/light_sensor")
+    @GetMapping("/light_sensor") //können beide bekommen
     public boolean[] lightSensor() {
         return light_sensors;
     }
 
 
-    @PostMapping("/velocity")
+    @PostMapping("/velocity") //von active client einstellbar
     public void setVelocity(@RequestBody String speed){
         String[] temp=json_manager.toStringArray(speed);
         this.speed=Integer.parseInt(temp[temp.length-1]);
         System.out.println(this.speed);
     }
 
-    @GetMapping("/disconnect")
+    @GetMapping("/disconnect") //darf nur active client
     public String disconnect(){
         String test="";
         try{
@@ -92,31 +93,31 @@ class BearBotX_Controller {
         return test;
     }
 
-    @GetMapping("/safety")
-    public String safety(){
-        String test="";
+    @GetMapping("/safety") //active Client
+    public boolean safety(){
+        boolean test=false  ;
         try{
             mBot.send(";MISC:SAFE:0");
-            test= "worked";
+            test= true;
         }catch(Exception ex){
-            return "Exception:\n"+ ex.getMessage();
+            return false;
         }
         return test;
     }
 
-    @GetMapping("/autopilot")
-    public String autopilot(){
-        String test="";
+    @GetMapping("/autopilot") //active Client
+    public boolean autopilot(){
+        boolean test=false;
         try{
             mBot.send(";MISC:AUTO:0");
-            test= "worked";
+            test= true;
         }catch(Exception ex){
-            return "Exception:\n"+ ex.getMessage();
+            return false;
         }
         return test;
     }
 
-    @PostMapping("/move")
+    @PostMapping("/move") //Befehle dürfen nur von active CLient kommen
     public void listen(@RequestBody String dir){
         String[] dirArray=json_manager.toStringArray(dir);
         //System.out.println(dir);
@@ -134,12 +135,12 @@ class BearBotX_Controller {
         mBot.send(";"+command);
     }
 
-    @GetMapping("/mbot_selection")
+    @GetMapping("/mbot_selection") //nur angezeigt wenn noch nicht connected wurde
     public ArrayList<String> mbotSelection(){
         return MBotListener.getDevices();
     }
 
-    @PostMapping("/color")
+    @PostMapping("/color") //nur active Client darf setzen
     public void ledColor(@RequestBody String colors){
         System.out.println(colors);
 
@@ -148,5 +149,20 @@ class BearBotX_Controller {
         String command="MISC:LEDS:"+String.valueOf(hex[1]).toUpperCase()+String.valueOf(hex[2]).toUpperCase()+","+String.valueOf(hex[3]).toUpperCase()+String.valueOf(hex[4]).toUpperCase()+","+String.valueOf(hex[5]).toUpperCase()+String.valueOf(hex[6]).toUpperCase()+","+dirLedColor[3];
         System.out.println(";"+command);
         mBot.send(";"+command);
+    }
+
+    @GetMapping("/active") //active Client wird gesetzt
+    public void becomeActive(){
+
+    }
+
+    @GetMapping("/passive") //active Client wird passive
+    public void becomePassive(){
+
+    }
+
+    @GetMapping("/driver_status") //passive Clients können fragen ob mBot frei ist
+    public void driverStatus(){
+
     }
 }
