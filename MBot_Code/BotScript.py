@@ -7,29 +7,27 @@ import math
 import json as jsonlib
 import _thread
 
-safetyMode = True
+safetyMode = False
 acceptCommands = True
 autoPilot = False
 
 
 def safeFunc(active):  # Function for Safe Mode Thread
-    # print("Savety Thread Started")
+    print("Safety Thread Started")
     global acceptCommands
     global autoPilot
     global safetyMode
     while True:
-        # print("Safe:",safetyMode,",Auto:",autoPilot)
-        if safetyMode:
+        if safetyMode:  # Safetymode
             distance = cyberpi.ultrasonic2.get(index=1)
-            if distance < 10:
-                print("<<<Wall Encountered>>>")
-                acceptCommands = False
-                cyberpi.mbot2.EM_stop(port="all")
+            if distance < 10:  # Wall encountered
+                acceptCommands = False  # Stop Main thread from recieving Commands
+                cyberpi.mbot2.EM_stop(port="all")  # Stop
                 cyberpi.audio.play('buzzing')
-                cyberpi.mbot2.straight(-10, speed=100)
-                cyberpi.mbot2.turn(180, speed=100)
-                acceptCommands = True
-        if autoPilot:
+                cyberpi.mbot2.straight(-10, speed=100)  # Drive Back 10 cm
+                cyberpi.mbot2.turn(180, speed=100)  # Turn around
+                acceptCommands = True  # Continue Main thread receiving Commands
+        if autoPilot:  # ----------DEPRECATED NEEDS TO BE REWRITTEN DUE TO SPECIFICATIONS
             # L2 = cyberpi.quad_rgb_sensor.get_gray('l2', index = 1)
             L1 = cyberpi.quad_rgb_sensor.get_gray('l1', index=1)
             R1 = cyberpi.quad_rgb_sensor.get_gray('r1', index=1)
@@ -47,7 +45,7 @@ def safeFunc(active):  # Function for Safe Mode Thread
                 # callable.led.on(255,0,0,id=4)
 
 
-def main():
+def main():  # Main Function
     cyberpi.audio.set_vol(1)
     cyberpi.led.on(0, 0, 0xFF)
 
@@ -98,7 +96,7 @@ def main():
 
     server_socket.listen(5)
     while True:
-
+        # Client Connection
         client_sock, client_raddr = server_socket.accept()
         print("c_socket:", client_sock, "\nc_raddr:", client_raddr)
         print("Client Address:", client_raddr)
@@ -107,17 +105,13 @@ def main():
 
         while True:
             # Continuously get Commands from Client
-
             data = client_sock.recv(1024)
             dataframe = data.decode('utf-8').split(';')[1]
-            print("###INCOMING COMMAND###")
-            # print("Dataframe", dataframe)
             command, extra, data = dataframe.split(':')
-            print(command, ":", extra, ":", data)
             sepData = data.split(',')
-            # print("Data", sepData)
-            # cyberpi.led.off()
-            # print(acceptCommands)
+            print("###INCOMING COMMAND###")
+            print("Dataframe", dataframe)
+            print(command, ":", extra, ":", data)
 
             if command == "MOVE" and acceptCommands == True:
                 # Code for handling Movement
