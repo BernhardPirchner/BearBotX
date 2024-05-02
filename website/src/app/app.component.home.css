@@ -1,0 +1,30 @@
+.home-container {
+    background-color: bisque;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .home-container-image {
+    background-image: url(Images/Logo.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    width: 100%;
+    max-width: 700px;
+    height: 100vh;
+    animation: logoAnimation 6s infinite;
+  }
+
+  @keyframes logoAnimation {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
