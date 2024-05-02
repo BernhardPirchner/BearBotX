@@ -3,16 +3,17 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { DataService } from './data.service';
 import { MbotSelection } from './mbot-selection.model';
 import { interval } from 'rxjs';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  receivedMessage: string = '';
+
   mBotIpAddress: string = '';
+  isConnected: boolean = false;
   speed: number = 0;
-  //sensorData: string = '';
   sensorData: string[] = [];
   mbotSelection: MbotSelection[] = [];
   colors: string[] = ['#e66465', '#e66465', '#e66465', '#e66465', '#e66465'];
@@ -20,44 +21,56 @@ export class AppComponent implements OnInit {
   applySameColor: boolean = false;
   pressedKeys: Set<string> = new Set<string>();
   combinedCommand: string = '';
-  lightSensorData: number[] = [];
+  lightSensorData: boolean[] = [];
+  safetyStatus: boolean = true;
+  autopilotStatus: boolean = false;
 
   constructor(private dataService: DataService, private http: HttpClient) { }
 
   ngOnInit() {
-    this.fetchData();
     this.fetchSensorData();
     this.fetchMbotSelection();
+    this.fetchSafetyStatus();
+    this.fetchAutopilotStatus();
     interval(2000).subscribe(() => {
       this.fetchSensorData();
     });
+    interval(500).subscribe(() => {
+      this.fetchLightSensorData();
+    });
   }
 
-  fetchData() {
-    this.dataService.fetchMessage().subscribe(
-      (data: any) => {
-        if (typeof data === 'string') {
-          this.receivedMessage = data || 'No message received';
-        } else if (typeof data === 'object' && 'message' in data) {
-          this.receivedMessage = data.message || 'No message received';
-        } else {
-          this.receivedMessage = 'Invalid message format';
-        }
-        console.log('Received Message:', this.receivedMessage);
-      },
-      error => {
-        console.error('Error fetching message:', error);
-        this.receivedMessage = 'Error fetching message';
-      }
-    );
+  toggleConnection() {
+    if (this.isConnected) {
+      this.disconnectFromIpAddress();
+    } else {
+      this.connectToIpAddress();
+    }
   }
 
+  toggleSafetyStatus() {
+    if (this.safetyStatus) {
+      this.safetyStatus = !this.safetyStatus;
+    } else {
+      this.fetchSafetyStatus();
+    }
+  }
+
+  toggleAutopilotStatus() {
+    if (this.autopilotStatus) {
+      this.autopilotStatus = !this.autopilotStatus;
+    } else {
+      this.fetchAutopilotStatus();
+    }
+  }
+  
   connectToIpAddress() {
     console.log('mBot IP Address:', this.mBotIpAddress);
     const url = 'http://10.10.2.120:6968/connect';
     this.http.post(url, { ipAddress: this.mBotIpAddress }).subscribe(
       (response) => {
         console.log('Successfully connected to mBot', response);
+        this.isConnected = true;
       },
       (error) => {
         console.error('Error connecting to mBot:', error);
@@ -66,10 +79,10 @@ export class AppComponent implements OnInit {
   }
 
   disconnectFromIpAddress() {
-    const url = 'http://10.10.2.120:6968/disconnect';
-    this.http.post(url, { ipAddress: this.mBotIpAddress }).subscribe(
+    this.dataService.disconnectFromIpAddress(this.mBotIpAddress).subscribe(
       (response) => {
         console.log('Successfully disconnected from mBot', response);
+        this.isConnected = false;
         this.mBotIpAddress = '';
       },
       (error) => {
@@ -188,7 +201,8 @@ export class AppComponent implements OnInit {
   
   fetchLightSensorData() {
     this.dataService.fetchLightSensorData().subscribe(
-      (data: number[]) => {
+      (data: boolean[]) => {
+        console.log('Received Light Sensor Data:', this.lightSensorData);
         this.lightSensorData = data;
       },
       error => {
@@ -197,6 +211,65 @@ export class AppComponent implements OnInit {
     );
   }
 
+  fetchSafetyStatus() {
+    this.dataService.fetchSafetyStatus().subscribe(
+      (response) => {
+        console.log('Successful Safety', response);
+        this.safetyStatus = false;
+    },
+    (error) => {
+      console.log('Error Safety', error);
+    }
+    );
+  }
+
+  fetchAutopilotStatus() {
+    this.dataService.fetchAutopilotStatus().subscribe(
+      /*(status: boolean) => {
+        this.autopilotStatus = status;
+        console.log('Autopilot Status:', this.autopilotStatus ? 'ON' : 'OFF');
+      },*/
+      (response) => {
+        	console.log('Successful Autopilot', response);
+          this.autopilotStatus = false;
+      },
+      (error) => {
+        console.log('Error Autopilot', error);
+      }
+    );
+  }
+
+  
+  /*fetchSafetyStatus() {
+    this.dataService.fetchSafetyStatus().subscribe(
+      (data: any) => {
+        this.safetyStatus = data;
+        console.log('Safety Status:', this.safetyStatus);
+      },
+      error => {
+        console.error('Error fetching safety status:', error);
+        this.safetyStatus = 'Error';
+      }
+    );
+  }*/
+
+  
+
+  
+
+  /*fetchAutopilotStatus() {
+    this.dataService.fetchAutopilotStatus().subscribe(
+      (data: any) => {
+        this.autopilotStatus = data;
+        console.log('Autopilot Status:', this.autopilotStatus);
+      },
+      error => {
+        console.error('Error fetching autopilot status:', error);
+        this.autopilotStatus = 'Error';
+      }
+    );
+  }*/
+  
   onColorChanged(event: any, ledNumber: number) {
     const color = event.target.value;
     this.colors[ledNumber - 1] = color;
@@ -213,7 +286,7 @@ export class AppComponent implements OnInit {
     this.sendColorToServer(color, 0);
   }
 
-  sendColorToServer(color: string, ledNumber: number) { //s
+  sendColorToServer(color: string, ledNumber: number) {
     const formattedLedNumber = ledNumber.toString().padStart(2, '0')
     const url = 'http://10.10.2.120:6968/color';
     this.http.post(url, { color, ledNumber: formattedLedNumber }).subscribe(

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../environments/environment';
 import { map } from 'rxjs/operators';
@@ -11,10 +11,6 @@ import { MbotSelection } from './mbot-selection.model';
 export class DataService {
 
   constructor(private http: HttpClient) { }
-
-  fetchMessage(): Observable<string> {
-    return this.http.get('http://10.10.2.120:6968/test', { responseType: 'text' });
-  }
 
   fetchSensorData(): Observable<any> {
     return this.http.get('http://10.10.2.120:6968/sensor_data', { responseType: 'text' });
@@ -35,7 +31,20 @@ export class DataService {
     );
   }
 
-  fetchLightSensorData(): Observable<number[]> {
-    return this.http.get<number[]>('http://10.10.2.120:6968/light_sensor');
+  fetchLightSensorData(): Observable<boolean[]> {
+    return this.http.get<boolean[]>('http://10.10.2.120:6968/light_sensor');
+  }
+
+  disconnectFromIpAddress(ipAddress: string): Observable<any> {
+    const params = new HttpParams().set('ipAddress', ipAddress);
+    return this.http.get('http://10.10.2.120:6968/disconnect', { params });
+  }
+
+  fetchSafetyStatus(): Observable<boolean> {
+    return this.http.get<boolean>('http://10.10.2.120:6968/safety');
+  }
+
+  fetchAutopilotStatus(): Observable<boolean> {
+    return this.http.get<boolean>('http://10.10.2.120:6968/autopilot');
   }
 }
