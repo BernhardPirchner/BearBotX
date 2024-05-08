@@ -221,6 +221,7 @@ def getSensorData():
     gyrox = str(cyberpi.get_gyro("x"))  # pitch acceleration
     gyroy = str(cyberpi.get_gyro("y"))  # roll acceleration
     gyroz = str(cyberpi.get_gyro("z"))  # yaw acceleration
+    accy = str(cyberpi.get_acc("y"))  # forward acceleration
     RGBSensorData = cyberpi.quad_rgb_sensor.get_line_sta(index=1)
     LineS = '{0:04b}'.format(RGBSensorData)
     L2 = LineS[0]  # outer left Sensor
@@ -231,7 +232,8 @@ def getSensorData():
     # JSON string
     json_string = jsonlib.dumps(
         {'light': light, 'battery': battery, 'volume': volume, 'gyrox': gyrox, 'gyroy': gyroy, 'gyroz': gyroz,
-         'pitch': pitch, 'roll': roll, 'yaw': yaw, 'distance': distance, 'L1': L1, 'L2': L2, 'R1': R1, 'R2': R2})
+         'pitch': pitch, 'roll': roll, 'yaw': yaw, 'accy': accy, 'distance': distance, 'L1': L1, 'L2': L2, 'R1': R1,
+         'R2': R2})
     json_string = json_string + "\n"
     return json_string
 
