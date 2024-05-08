@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8f54ed0-56af-44b3-9f85-9046a5c76b2f" name="Changes" comment="Changes to Safety and Autopilot">
+    <list default="true" id="b8f54ed0-56af-44b3-9f85-9046a5c76b2f" name="Changes" comment="Commenting Refactoring">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BotScript.py" beforeDir="false" afterPath="$PROJECT_DIR$/BotScript.py" afterDir="false" />
     </list>
@@ -32,21 +32,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Mani__MBOT&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/GitRepos/Saubaern/MBot_Code&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.main.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "Mani__MBOT",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/GitRepos/Saubaern/MBot_Code",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="pythonProject" />
@@ -116,7 +117,9 @@
       <workItem from="1713947394037" duration="13000" />
       <workItem from="1714045908565" duration="1907000" />
       <workItem from="1714460191573" duration="8000" />
-      <workItem from="1714644311223" duration="5000" />
+      <workItem from="1714644311223" duration="91000" />
+      <workItem from="1714650642657" duration="477000" />
+      <workItem from="1715149494523" duration="83000" />
     </task>
     <task id="LOCAL-00001" summary="Fixed Connection">
       <option name="closed" value="true" />
@@ -222,7 +225,15 @@
       <option name="project" value="LOCAL" />
       <updated>1713947403626</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Commenting Refactoring">
+      <option name="closed" value="true" />
+      <created>1714644338080</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1714644338081</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -252,7 +263,8 @@
     <MESSAGE value="Added Safety Mode" />
     <MESSAGE value="Safety mode Completed" />
     <MESSAGE value="Changes to Safety and Autopilot" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changes to Safety and Autopilot" />
+    <MESSAGE value="Commenting Refactoring" />
+    <option name="LAST_COMMIT_MESSAGE" value="Commenting Refactoring" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/pythonProject$main.coverage" NAME="main Coverage Results" MODIFIED="1710317143072" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
