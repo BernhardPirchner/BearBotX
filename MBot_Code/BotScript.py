@@ -197,7 +197,10 @@ def main():
                 # Code for sending Data back to the client
                 dataJson = getSensorData()
                 client_sock.send(dataJson)
-
+            elif command == "LINE":
+                # Code for sending Line Data to client
+                dataJson = getLineData()
+                client_sock.send(dataJson)
             elif command == "DISC":
                 cyberpi.mbot2.EM_stop(port="all")
                 break
@@ -234,6 +237,20 @@ def getSensorData():
         {'light': light, 'battery': battery, 'volume': volume, 'gyrox': gyrox, 'gyroy': gyroy, 'gyroz': gyroz,
          'pitch': pitch, 'roll': roll, 'yaw': yaw, 'accy': accy, 'distance': distance, 'L1': L1, 'L2': L2, 'R1': R1,
          'R2': R2})
+    json_string = json_string + "\n"
+    return json_string
+
+
+def getLineData():
+    RGBSensorData = cyberpi.quad_rgb_sensor.get_line_sta(index=1)
+    LineS = '{0:04b}'.format(RGBSensorData)
+    L2 = LineS[0]  # outer left Sensor
+    L1 = LineS[1]  # inner left Sensor
+    R1 = LineS[2]  # inner right Sensor
+    R2 = LineS[3]  # outer right Sensor
+
+    # JSON string
+    json_string = jsonlib.dumps({'L1': L1, 'L2': L2, 'R1': R1, 'R2': R2})
     json_string = json_string + "\n"
     return json_string
 
