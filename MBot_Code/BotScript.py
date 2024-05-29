@@ -98,13 +98,15 @@ def main():
     # listen for Connections
     server_socket.listen(5)
     while True:
+        cyberpi.console.clear()
         # Client Connection
         client_sock, client_raddr = server_socket.accept()
         print("c_socket:", client_sock, "\nc_raddr:", client_raddr)
         print("Client Address:", client_raddr)
         print("Client Socket:", client_sock)
-        cyberpi.console.println("Connected to:" + client_raddr)
-
+        test = "Connected To: " + str(client_raddr[0])
+        cyberpi.console.println(test)
+        print("Good to go")
         # Continuously get Commands from Client
         while True:
             data = client_sock.recv(1024)  # Data from Client
@@ -250,7 +252,7 @@ def getLineData():
     R2 = LineS[3]  # outer right Sensor
 
     # JSON string
-    json_string = jsonlib.dumps({'L1': L1, 'L2': L2, 'R1': R1, 'R2': R2})
+    json_string = jsonlib.dumps({'L2': L2, 'L1': L1, 'R1': R1, 'R2': R2})
     json_string = json_string + "\n"
     return json_string
 
