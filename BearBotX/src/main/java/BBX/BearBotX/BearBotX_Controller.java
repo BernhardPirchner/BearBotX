@@ -22,13 +22,14 @@ class BearBotX_Controller {
             }
         };
     }
-    MBot mBot =new MBot();
-    JSON_Manager json_manager=new JSON_Manager();
+    private MBot mBot =new MBot();
+    private JSON_Manager json_manager=new JSON_Manager();
     private boolean[] light_sensors={false, false, false, false};
     private String text="Fabi L";
     private int speed=0;
     private String activeUser="";
     private boolean connectionStatus=false;
+    private boolean autopilot=false;
 
     @GetMapping("/test")
     String getString(){
@@ -116,6 +117,15 @@ class BearBotX_Controller {
         }
     }
 
+    @GetMapping("/autopilot")
+    public void autopilot(HttpServletRequest request){
+        if(activeUser.equals(request.getRemoteAddr())){
+            autopilot=!autopilot;
+        }
+
+    }
+
+    /*
     @GetMapping("/autopilot") //active Client
     public boolean autopilot(HttpServletRequest request){
         if(activeUser.equals(request.getRemoteAddr())) {
@@ -130,11 +140,11 @@ class BearBotX_Controller {
         }else{
             return false;
         }
-    }
+    }*/
 
     @PostMapping("/move") //Befehle dürfen nur von active Client kommen
     public void listen(@RequestBody String dir, HttpServletRequest request){
-        if(activeUser.equals(request.getRemoteAddr())) {
+        if(activeUser.equals(request.getRemoteAddr())&&!autopilot) {
             String[] dirArray = json_manager.toStringArray(dir);
             //System.out.println(dir);
             //System.out.println(dirArray[1]);
