@@ -7,12 +7,13 @@ import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-class BearBotX_Controller {
+class BearBotX_Controller implements Runnable {
     @Bean
     public CommandLineRunner runner(TaskExecutor taskExecutor){
         return new CommandLineRunner() {
@@ -22,6 +23,7 @@ class BearBotX_Controller {
             }
         };
     }
+
     private MBot mBot =new MBot();
     private JSON_Manager json_manager=new JSON_Manager();
     private boolean[] light_sensors={false, false, false, false};
@@ -121,6 +123,7 @@ class BearBotX_Controller {
     public void autopilot(HttpServletRequest request){
         if(activeUser.equals(request.getRemoteAddr())){
             autopilot=!autopilot;
+            run();
         }
 
     }
@@ -206,5 +209,64 @@ class BearBotX_Controller {
     @GetMapping("/connection_status") //zur Überprüfung ob connected oder nicht
     public boolean connectionStatus(){
         return connectionStatus;
+    }
+
+    @Override public void run(){
+        while(autopilot){
+            String json=mBot.getData(";LINE:0:0,0");
+            String[] tmp=json_manager.toStringArray(json);
+
+            System.out.println("JSON"+json+"\nTemp:" + tmp);
+            boolean l2=true, l1=true, r1=true, r2=true;
+            for (int i=0; i<tmp.length; i+=2){
+                System.out.print(tmp[i]+" "+tmp[i+1]+": ");
+                switch (tmp[i]){
+                    case "L2":
+                        switch (tmp[i+1]){
+                            case "0": l2=false; break;
+                            case "1": l2=true; break;
+                        }
+                        System.out.println(l2); break;
+                    case "L1":
+                        switch (tmp[i+1]){
+                            case "0": l1=false; break;
+                            case "1": l1=true; break;
+                        }
+                        System.out.println(l1);break;
+                    case "R1":
+                        switch (tmp[i+1]){
+                            case "0": r1=false; break;
+                            case "1": r1=true; break;
+                        }
+                        System.out.println(r1);break;
+                    case "R2":
+                        switch (tmp[i+1]){
+                            case "0": r2=false; break;
+                            case "1": r2=true; break;
+                        }
+                        System.out.println(r2);break;
+                    default: break;
+                }
+
+            }
+
+            System.out.println(l2 + " " + l1 + " " + r1 + " " + r2);
+
+            if(l1&&r1){
+                mBot.send(";MOVE:FWST:15,000,RS");
+            } else if (l1&&!r1) {
+                mBot.send(";MOVE:FWLT:10,000,RS");
+            } else if (!l1&&r1) {
+                mBot.send(";MOVE:FWRT:10,000,RS");
+            }else {
+                //mBot.send(";MOVE:BWST:50,000,RS");
+                mBot.send(";MOVE:FWST:25,000,RS");
+            }
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }
