@@ -125,7 +125,6 @@ class BearBotX_Controller implements Runnable {
             autopilot=!autopilot;
             run();
         }
-
     }
 
     /*
@@ -147,6 +146,8 @@ class BearBotX_Controller implements Runnable {
 
     @PostMapping("/move") //Befehle dürfen nur von active Client kommen
     public void listen(@RequestBody String dir, HttpServletRequest request){
+        System.out.println(activeUser);
+        System.out.println(request.getRemoteAddr());
         if(activeUser.equals(request.getRemoteAddr())&&!autopilot) {
             String[] dirArray = json_manager.toStringArray(dir);
             //System.out.println(dir);
@@ -220,50 +221,69 @@ class BearBotX_Controller implements Runnable {
             boolean l2=true, l1=true, r1=true, r2=true;
             for (int i=0; i<tmp.length; i+=2){
                 System.out.print(tmp[i]+" "+tmp[i+1]+": ");
-                switch (tmp[i]){
+                switch (tmp[i]) {
                     case "L2":
-                        switch (tmp[i+1]){
-                            case "0": l2=false; break;
-                            case "1": l2=true; break;
+                        switch (tmp[i + 1]) {
+                            case "0":
+                                l2 = false;
+                                break;
+                            case "1":
+                                l2 = true;
+                                break;
                         }
-                        System.out.println(l2); break;
+                        System.out.println(l2);
+                        break;
                     case "L1":
-                        switch (tmp[i+1]){
-                            case "0": l1=false; break;
-                            case "1": l1=true; break;
+                        switch (tmp[i + 1]) {
+                            case "0":
+                                l1 = false;
+                                break;
+                            case "1":
+                                l1 = true;
+                                break;
                         }
-                        System.out.println(l1);break;
+                        System.out.println(l1);
+                        break;
                     case "R1":
-                        switch (tmp[i+1]){
-                            case "0": r1=false; break;
-                            case "1": r1=true; break;
+                        switch (tmp[i + 1]) {
+                            case "0":
+                                r1 = false;
+                                break;
+                            case "1":
+                                r1 = true;
+                                break;
                         }
-                        System.out.println(r1);break;
+                        System.out.println(r1);
+                        break;
                     case "R2":
-                        switch (tmp[i+1]){
-                            case "0": r2=false; break;
-                            case "1": r2=true; break;
+                        switch (tmp[i + 1]) {
+                            case "0":
+                                r2 = false;
+                                break;
+                            case "1":
+                                r2 = true;
+                                break;
                         }
-                        System.out.println(r2);break;
-                    default: break;
+                        System.out.println(r2);
+                        break;
+                    default:
+                        break;
                 }
-
             }
-
             System.out.println(l2 + " " + l1 + " " + r1 + " " + r2);
 
             if(l1&&r1){
                 mBot.send(";MOVE:FWST:15,000,RS");
             } else if (l1&&!r1) {
-                mBot.send(";MOVE:FWLT:10,000,RS");
+                mBot.send(";MOVE:TRLT:25,000,RS");
             } else if (!l1&&r1) {
-                mBot.send(";MOVE:FWRT:10,000,RS");
+                mBot.send(";MOVE:TRRT:25,000,RS");
             }else {
                 //mBot.send(";MOVE:BWST:50,000,RS");
-                mBot.send(";MOVE:FWST:25,000,RS");
+                mBot.send(";MOVE:BWST:10,000,RS");
             }
             try {
-                Thread.sleep(100);
+                Thread.sleep(200);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
