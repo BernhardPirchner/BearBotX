@@ -1,0 +1,88 @@
+<div class="container">
+
+  <!-- UPPER SIDE -->
+  <div class="upper-side">
+    <h1 class="title">Welcome to BearBotX Extension</h1>
+    <div class="upper-content">
+      <div class="sensor-container">
+        <h2>Sensor Data:</h2>
+        <pre>{{ sensorData }}</pre>
+      </div>
+      <div class="mbot"></div>
+    </div>
+  </div>
+
+  <!-- LOWER SIDE -->
+  <div class="lower-side">
+
+    <!-- LOWER SIDE LEFT -->
+    <div class="lower-side-left">
+      <h2>Toolbox</h2>
+
+      <!-- Slider -->
+      <div class="speed-container">
+        <input type="range" class="slider" id="myRange" min="0" max="100" [(ngModel)]="speed" (input)="updateSpeed()">
+        <span>{{ speed }}</span>
+      </div>
+
+      <!-- Lower Side Left Content -->
+      <div class="lower-side-left-content">
+        <!-- Lower Side Left Left -->
+        <div class="lower-side-left-left">
+          <div class="onoff-container">
+            <div class="safety-container">
+              <button [ngClass]="{ 'on': safetyStatus, 'off': !safetyStatus }" (click)="toggleSafetyStatus()">Safety {{
+                safetyStatus ? 'ON' : 'OFF' }}</button>
+            </div>
+            <div class="autopilot-container">
+              <button [ngClass]="{ 'on': autopilotStatus, 'off': !autopilotStatus }"
+                (click)="toggleAutopilotStatus()">Autopilot {{ autopilotStatus ? 'ON' : 'OFF' }}</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lower Side Left Right -->
+        <div class="lower-side-left-right">
+          <div class="key-visualization">
+            <div class="key" id="key-w" [class.active]="pressedKeys.has('w')">W</div>
+            <div class="key" id="key-a" [class.active]="pressedKeys.has('a')">A</div>
+            <div class="key" id="key-s" [class.active]="pressedKeys.has('s')">S</div>
+            <div class="key" id="key-d" [class.active]="pressedKeys.has('d')">D</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="lower-side-divider"></div>
+
+    <!-- LOWER SIDE RIGHT -->
+    <div class="lower-side-right">
+
+      <div class="colorpicker-container">
+        <h2>Color Picker:</h2>
+        <input type="checkbox" id="applySameColor" name="applySameColor" [(ngModel)]="applySameColor">
+        <label for="applySameColor">Gleiche Farbe für alle LEDs anwenden</label>
+      </div>
+
+      <div class="colorpicker-items">
+        <input type="color" id="head1" name="head1" [value]="colors[0]" (input)="onColorChanged($event, 1)">
+        <input type="color" id="head2" name="head2" [value]="colors[1]" (input)="onColorChanged($event, 2)">
+        <input type="color" id="head3" name="head3" [value]="colors[2]" (input)="onColorChanged($event, 3)">
+        <input type="color" id="head4" name="head4" [value]="colors[3]" (input)="onColorChanged($event, 4)">
+        <input type="color" id="head5" name="head5" [value]="colors[4]" (input)="onColorChanged($event, 5)">
+      </div>
+
+      <div class="lightsensor-container">
+        <h2>Light Sensor Data:</h2>
+        <div class="color-box" [style.backgroundColor]="lightSensorData[0] ? 'white' : 'black'"></div>
+        <div class="color-box" [style.backgroundColor]="lightSensorData[1] ? 'white' : 'black'"></div>
+        <div class="color-box" [style.backgroundColor]="lightSensorData[2] ? 'white' : 'black'"></div>
+        <div class="color-box" [style.backgroundColor]="lightSensorData[3] ? 'white' : 'black'"></div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

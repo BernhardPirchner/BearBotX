@@ -1,0 +1,137 @@
+
+  .members-container{
+    margin: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .members-container-block{
+    background-color: rgb(198, 255, 198);
+    flex: 1 1 calc(40% - 10px);
+    border: 5px solid black; 
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: auto;
+    width: 50%;
+  }
+
+  .members-container-block-image-pirchner{background-image: url('Images/Image_Pirchner.png');}
+  .members-container-block-image-brunhuber{background-image: url('Images/Image_Brunhuber.jpg');}
+  .members-container-block-image-beierschoder{background-image: url('Images/Image_Beierschoder.jpg');}
+  .members-container-block-image-duernberger{background-image: url('Images/Image_Duernberger.JPG');}
+
+  .members-container-block-image{
+    height: 300px;
+    width: 200px;
+    background-size: cover; 
+    flex-shrink: 0;
+  }
+
+  .members-container-block-image:hover{
+    filter: brightness(80%);
+    transition: filter 0.3s ease;
+
+    .members-container-block-image-insta{
+      opacity: 1;
+    }
+  }
+
+  .members-container-block-image-insta{
+    opacity: 0;
+    background-position: Center;
+    background-image: url(Images/Insta-Logo.png);
+    background-size: 30%;
+    background-repeat: no-repeat;
+    height: 300px;
+    width: 200px;
+    transition: opacity 0.3s ease; /* Füge eine Transition für die Opazität hinzu */
+  }
+  
+  .members-container-block-description{
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .members-container-block-description-title{
+    margin: 0px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 50px;
+  }
+
+  .members-container-block-description-text{
+    font-family: 'Gill Sans', 'Gill Sans MT', Arial, Helvetica, sans-serif;
+    font-size: 25px;
+    text-align: justify;
+  }
+
+  .members-container-block-pirchner{background-color: rgb(94, 255, 134);}
+  .members-container-block-brunhuber{background-color: rgb(98, 247, 177);}
+  .members-container-block-beierschoder{background-color: rgb(94, 255, 215);}
+  .members-container-block-duernberger{background-color: rgb(94, 255, 234);}
+
+
+  @media only screen and (max-width: 1700px){
+    .members-container{
+      margin: 0px;
+      flex-direction: column;
+    }
+
+    .members-container-block{
+      flex: 1 1 calc(100% - 10px);
+      border: 0px; 
+      margin: 0px;
+      width: 100%;
+    }
+
+    .members-container-block-image{
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+      margin: 50px;
+    }
+  
+    .members-container-block-description{
+      margin-left: 30px;
+      margin-right: 100px;
+    }
+  
+    .members-container-block-description-title{
+      text-align: left;
+    }  
+  }
+
+  @media only screen and (max-width: 850px){  
+    .members-container-block{
+      flex-direction: column;
+    }
+  
+    .members-container-block-image{
+      height: 400px;
+      width: 300px;
+
+      margin-left: 100px;
+      margin: 30px;
+    }
+
+    .members-container-block-image:hover{
+      .members-container-block-image-insta{
+        opacity: 0;
+      }
+    }
+    
+    .members-container-block-description{
+      margin-left: 50px;
+      margin-right: 50px;
+      margin-bottom: 30px;
+    }
+
+  
+    .members-container-block-description-title{
+      font-size: 45px;
+      text-align: center;
+    }
+  }
+
