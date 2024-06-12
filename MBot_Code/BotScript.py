@@ -12,7 +12,7 @@ acceptCommands = True
 autoPilot = False
 
 
-## Function for Safe Mode Thread
+## Function for second Thread
 def safeFunc(active):
     print("Safety Thread Started")
     global acceptCommands
@@ -73,9 +73,6 @@ def main():
     cyberpi.console.println(ip)
     time.sleep(5)
 
-    cyberpi.console.clear()
-    cyberpi.led.off()
-
     # Socket for Broadcast message using UDP
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     ai = socket.getaddrinfo(ip, port)
@@ -100,11 +97,13 @@ def main():
     while True:
         # Client Connection
         client_sock, client_raddr = server_socket.accept()
+        cyberpi.console.clear()
         print("c_socket:", client_sock, "\nc_raddr:", client_raddr)
         print("Client Address:", client_raddr)
         print("Client Socket:", client_sock)
-        cyberpi.console.println("Connected to:" + client_raddr)
-
+        test = "Connected To: " + str(client_raddr[0])
+        cyberpi.console.println(test)
+        print("Good to go")
         # Continuously get Commands from Client
         while True:
             data = client_sock.recv(1024)  # Data from Client
@@ -191,7 +190,11 @@ def main():
 
                 elif extra == "AUTO":
                     # Toggle Autopilot
-                    autoPilot = True
+                    if autoPilot == True:
+                        autoPilot = False
+                    else:
+                        autoPilot = True
+                    safetyMode = False
 
             elif command == "DATA":
                 # Code for sending Data back to the client
@@ -250,7 +253,7 @@ def getLineData():
     R2 = LineS[3]  # outer right Sensor
 
     # JSON string
-    json_string = jsonlib.dumps({'L1': L1, 'L2': L2, 'R1': R1, 'R2': R2})
+    json_string = jsonlib.dumps({'L2': L2, 'L1': L1, 'R1': R1, 'R2': R2})
     json_string = json_string + "\n"
     return json_string
 
