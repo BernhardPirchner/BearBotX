@@ -12,7 +12,7 @@ acceptCommands = True
 autoPilot = False
 
 
-## Function for Safe Mode Thread
+## Function for second Thread
 def safeFunc(active):
     print("Safety Thread Started")
     global acceptCommands
@@ -73,9 +73,6 @@ def main():
     cyberpi.console.println(ip)
     time.sleep(5)
 
-    cyberpi.console.clear()
-    cyberpi.led.off()
-
     # Socket for Broadcast message using UDP
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     ai = socket.getaddrinfo(ip, port)
@@ -98,9 +95,9 @@ def main():
     # listen for Connections
     server_socket.listen(5)
     while True:
-        cyberpi.console.clear()
         # Client Connection
         client_sock, client_raddr = server_socket.accept()
+        cyberpi.console.clear()
         print("c_socket:", client_sock, "\nc_raddr:", client_raddr)
         print("Client Address:", client_raddr)
         print("Client Socket:", client_sock)
@@ -193,7 +190,11 @@ def main():
 
                 elif extra == "AUTO":
                     # Toggle Autopilot
-                    autoPilot = True
+                    if autoPilot == True:
+                        autoPilot = False
+                    else:
+                        autoPilot = True
+                    safetyMode = False
 
             elif command == "DATA":
                 # Code for sending Data back to the client
