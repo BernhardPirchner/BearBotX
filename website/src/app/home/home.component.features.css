@@ -1,0 +1,196 @@
+  .features-container{
+    margin-top: 50px;
+    margin-bottom: 130px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .features-container-block{
+    margin: 10px;
+    border-top-left-radius: 25%;
+    border-top-right-radius: 25%;
+    
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    height: 640px;
+    width: 310px;
+
+    transition: all 0.3s ease; 
+  }
+
+  .features-container-block-control{background-color: rgb(238, 37, 11);}
+  .features-container-block-connection{background-color: rgb(255, 81, 0);}
+  .features-container-block-color{background-color: rgb(253, 101, 0);}
+  .features-container-block-sensor{background-color: rgb(255, 166, 0);}
+  .features-container-block-modell{background-color: rgb(255, 187, 0);}
+
+  .features-container-block:hover{
+    height: 750px;
+    width: 360px;
+    margin-bottom: -100px;
+
+    .features-container-block-image{
+        height: 350px;
+        width: 350px;
+    }
+
+    .features-container-block-description-title{
+        font-size: 55px;
+    }
+
+    .features-container-block-description-text{
+        font-size: 30px;
+    }
+  }
+
+  .features-container-block-image:hover{
+    background-color: bisque;
+  }
+
+  /*Bilder für die Blocks*/
+  .features-container-block-image-control{background-image: url('Images/Button-WASD.png');}
+  .features-container-block-image-connection{background-image: url('Images/Button-Conection.png');}
+  .features-container-block-image-color{background-image: url('Images/Button-Color.png');}
+  .features-container-block-image-sensor{background-image: url('Images/Button-Sensor.png');}
+  .features-container-block-image-modell{background-image: url('Images/Button-Modell.png');}
+
+
+  .features-container-block-image{
+    background-color: white;
+    height: 300px;
+    width: 300px;
+    border-radius: 20%;
+    background-size: cover; 
+    border: 5px solid black; 
+    cursor: pointer; 
+    transition: all 0.3s ease; 
+  }
+
+  .features-container-block-description{
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .features-container-block-description-title{
+    margin: 0px;
+
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 50px;
+
+    transition: all 0.3s ease; 
+  }
+
+  .features-container-block-description-text{
+    font-family: 'Gill Sans', 'Gill Sans MT', Arial, Helvetica, sans-serif;
+    font-size: 25px;
+
+    text-align: justify;
+
+    transition: all 0.3s ease; 
+  }
+
+
+  /*Für kleine Fenster*/
+  @media only screen and (max-width: 1700px){
+    .features-container{
+      margin: 0px;
+      display: block;
+    }
+    
+    .features-container-block{
+      margin: 0;
+      display: flex;
+      height: 310px;
+      width: 100%;
+
+      border-top-left-radius: 0%;
+      border-top-right-radius: 0%;
+    }
+
+    .features-container-block:hover{
+      height: 310px;
+      width: 100%;
+      margin-bottom: 0px;
+      
+      .features-container-block-image{
+          height: 220px;
+          width: 220px;
+      }
+
+      .features-container-block-description-text{
+        font-size: 30px;
+      }
+    }
+
+    .features-container-block-image{
+      margin-left: 50px;
+      background-color: white;
+      height: 170px;
+      width: 170px;
+
+      flex-shrink: 0; 
+    }
+
+    .features-container-block-description{
+      margin-left: 50px;
+      margin-right: 70px;
+      text-align: left;
+    }
+
+    .features-container-block-description-text{
+      font-size: 25px;
+  }
+
+
+
+  /*Für Handy*/
+  @media only screen and (max-width: 850px){
+    .features-container{
+      display: block;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .features-container-block{
+      display: flex;
+      flex-direction: column;
+      height: 800px;
+      
+
+      justify-content: center; /* Horizontale Ausrichtung zentrieren */
+      align-items: center; /* Vertikale Ausrichtung zentrieren */
+    }
+
+    .features-container-block:hover{
+      height: 800px;
+      
+      .features-container-block-image{
+          height: 250px;
+          width: 250px;
+      }
+
+      .features-container-block-description-title{
+        font-size: 50px;
+      }
+
+      .features-container-block-description-text{
+        font-size: 25px;
+      }
+    }
+
+    .features-container-block-image{
+      margin-left: 0px;
+      height: 250px;
+      width: 250px;
+    }
+
+    .features-container-block-description{
+      margin-left: 70px;
+      margin-right: 70px;
+      text-align: Center;
+    }
+  }
+}

@@ -1,0 +1,17 @@
+.footer-container{
+    height: 300px;
+    background-color: bisque;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/*.footer-container-image{
+    background-image: url(Images/Logo.png);
+    background-size: contain;
+    background-position: center;
+    padding: 60px;
+    height: 40vh;
+    width: 100vh;
+}*/
