@@ -24,6 +24,17 @@ class BearBotX_Controller implements Runnable {
         };
     }
 
+    @Bean
+    public CommandLineRunner runner2(TaskExecutor taskExecutor){
+        return new CommandLineRunner() {
+            @Override
+            public void run(String... args) throws Exception {
+                System.out.println("hahahaha");
+                taskExecutor.execute(BearBotX_Controller.this);
+            }
+        };
+    }
+
     private MBot mBot =new MBot();
     private JSON_Manager json_manager=new JSON_Manager();
     private boolean[] light_sensors={false, false, false, false};
@@ -56,7 +67,7 @@ class BearBotX_Controller implements Runnable {
 
     @GetMapping("/sensor_data") //Intervall bei mir ausführen und Clients nur Daten schicken
     public ArrayList<String> getData(){
-        String json= mBot.getData(";DATA:0:0");
+        String json= mBot.getData(";DATA:0:0,0");
         String[] temp=json_manager.toStringArray(json);
         ArrayList<String> data=new ArrayList<>();
         for (int i=0; (i+1)<=temp.length ; i+=2){
@@ -91,7 +102,7 @@ class BearBotX_Controller implements Runnable {
         if(activeUser.equals(request.getRemoteAddr())) {
             String test = "";
             try {
-                mBot.send(";DISC:0:0");
+                mBot.send(";DISC:0:0,0");
                 test = mBot.disconnect();
                 connectionStatus=false;
             } catch (Exception ex) {
@@ -108,7 +119,7 @@ class BearBotX_Controller implements Runnable {
         if(activeUser.equals(request.getRemoteAddr())){
         boolean test=false  ;
         try{
-            mBot.send(";MISC:SAFE:0");
+            mBot.send(";MISC:SAFE:0,0");
             test= true;
         }catch(Exception ex){
             return false;
@@ -123,6 +134,7 @@ class BearBotX_Controller implements Runnable {
     public void autopilot(HttpServletRequest request){
         if(activeUser.equals(request.getRemoteAddr())){
             autopilot=!autopilot;
+            System.out.println(autopilot);
             run();
         }
     }
@@ -212,7 +224,9 @@ class BearBotX_Controller implements Runnable {
         return connectionStatus;
     }
 
-    @Override public void run(){
+    @Override
+    public void run(){
+        System.out.println("hehehehe");
         while(autopilot){
             String json=mBot.getData(";LINE:0:0,0");
             String[] tmp=json_manager.toStringArray(json);
@@ -272,18 +286,22 @@ class BearBotX_Controller implements Runnable {
             }
             System.out.println(l2 + " " + l1 + " " + r1 + " " + r2);
 
-            if(l1&&r1){
+            if(l1&&r1&&!l2&&!r2){
                 mBot.send(";MOVE:FWST:15,000,RS");
-            } else if (l1&&!r1) {
-                mBot.send(";MOVE:TRLT:25,000,RS");
+            }else if(r2){
+                mBot.send(";MOVE:TRRT:13,000,RS");
+            }else if(l2){
+                mBot.send(";MOVE:TRLT:13,000,RS");
+            }else if (l1&&!r1) {
+                mBot.send(";MOVE:TRLT:13,000,RS");
             } else if (!l1&&r1) {
-                mBot.send(";MOVE:TRRT:25,000,RS");
+                mBot.send(";MOVE:TRRT:13,000,RS");
             }else {
                 //mBot.send(";MOVE:BWST:50,000,RS");
-                mBot.send(";MOVE:BWST:10,000,RS");
+                mBot.send(";MOVE:BWST:15,000,RS");
             }
             try {
-                Thread.sleep(200);
+                Thread.sleep(150);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

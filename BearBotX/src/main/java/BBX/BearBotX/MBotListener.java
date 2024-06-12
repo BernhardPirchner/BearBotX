@@ -14,6 +14,8 @@ public class MBotListener implements Runnable {
         try {
             socket=new DatagramSocket(6970);
             socket.setBroadcast(true);
+            list.add("10.10.1.1");
+            list.add("10.10.255.255");
             run();
         }catch(Exception ex){
             System.out.println(ex.getMessage());
