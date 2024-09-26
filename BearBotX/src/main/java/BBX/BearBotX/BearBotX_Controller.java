@@ -92,7 +92,7 @@ class BearBotX_Controller implements Runnable {
     public void setVelocity(@RequestBody String speed, HttpServletRequest request){
         if(activeUser.equals(request.getRemoteAddr())){
             String[] temp=json_manager.toStringArray(speed);
-            this.speed=Integer.parseInt(temp[temp.length-1]);
+            this.speed=Integer.parseInt(temp[temp.length-1])*2;
             System.out.println(this.speed);
         }
     }
@@ -289,6 +289,7 @@ class BearBotX_Controller implements Runnable {
             if(l1&&r1&&!l2&&!r2){
                 mBot.send(";MOVE:FWST:15,000,RS");
             }else if(r2){
+
                 mBot.send(";MOVE:TRRT:13,000,RS");
             }else if(l2){
                 mBot.send(";MOVE:TRLT:13,000,RS");
